@@ -1,11 +1,21 @@
-# DiCER
-Diffuse Cluster Estimation and Regression. A de-noising tool.
+# fMRI Cluster Correct
+
+## Correction
+```python
+clusterCorrect.py
+```
 
 
-One of the most controversial procedures in the analysis of resting-state functional magnetic resonance imaging (rsfMRI) data is global signal regression (GSR)––the removal, via linear regression, of the mean signal averaged over the entire brain, from voxelwise or regional time series (Fox-J Neurophysiol; Fox \& Murphy consensus paper; Power-Respiration paper). 
-On the one hand, the global mean signal contains variance associated with respiratory and motion-related artifacts. Its removal via GSR improves various quality control metrics, enhances the anatomical specificity of functional connectivity patterns, and can increase the behavioural variance explained by such patterns. 
-On the other hand, GSR alters the distribution of regional signal correlations in the brain, can induce artifactual anti-correlations, may remove real neural signal, and can distort case-control comparisons of functional connectivity measures. Global signal fluctuations can easily be identified by visualizing a matrix of colour-coded signal intensities, called a grayplot (or carpet plot), in which rows represent voxels and columns represent time. Prior to GSR, large, periodic bands of coherent signal changes that affect most of the brain are often apparent; after GSR, these apparent global changes are greatly diminished. 
-Here, using three independent datasets, we show that the apparent success of GSR in removing apparent global signal changes is an artefact of the way in which voxels are ordered in the carpet plot (which is typically pseudorandomly). 
-Reordering the grayplot to emphasize the cluster structure in the data reveals a greater diversity of anatomically widespread signal deflections (WSDs) than previously thought. 
-The precise form of these WSDs varies across time and participants and, in many cases, they often remain after GSR has been applied. We present an alternative, iterative correction method called Diffuse Cluster Estimation and Regression (DiCER), that identifies representative signals associated with large clusters of coherent voxels. 
-Relative to GSR, DiCER is more effective at removing diverse WSDs as visualized in grayplots, reduces correlations between functional connectivity and head motion estimates, and results in comparable, if not improved, identification of canonical functional connectivity networks. 
+## Cluster-reorder
+
+```python
+clusterReorder.py
+```
+
+## Master script:
+```bash
+carpetCleaner.sh
+```
+This takes the data from a fmriprep prepro, uses DBSCAN to find the regressors then cleans the data by using these regressors in fslregfilt.
+
+This is currently coded to run in serial -- but can be easily made to run in parallel (to do all of it!)
