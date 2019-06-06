@@ -1,0 +1,48 @@
+#!/bin/bash
+#SBATCH --account=kg98
+#SBATCH --time=24:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+
+echo "Processing " $subject ".................."
+if [ ! -d "$FMRIPREP_DIR/$subject/dbscan" ]; then
+          mkdir -p $FMRIPREP_DIR/$subject/dbscan
+fi
+func=$FMRIPREP_DIR/$subject'/func/'$subject"_task-rest_bold_space-"$space_variant"_variant-AROMAnonaggr+2P_preproc.nii.gz"
+confounds=$FMRIPREP_DIR/$subject'/func/'$subject"_task-rest_bold_confounds.tsv"
+gm_prob_T1w=$FMRIPREP_DIR/$subject/anat/$subject"_T1w_space-"$space_variant"_class-GM_probtissue.nii.gz"
+gm_prob_epi=$FMRIPREP_DIR/$subject/anat/$subject"_T1w_space-"$space_variant"_variant_class-GM_probtissue.nii.gz"
+mask_T1w=$FMRIPREP_DIR/$subject/anat/$subject"_T1w_space-"$space_variant"_brainmask.nii.gz"
+mask_epi=$FMRIPREP_DIR/$subject/anat/$subject"_T1w_space-"$space_variant"_variant_brainmask.nii.gz"
+
+dtissue_T1w=$FMRIPREP_DIR/$subject/anat/$subject"_T1w_space-"$space_variant"_dtissue.nii.gz"
+dtissue_epi=$FMRIPREP_DIR/$subject/anat/$subject"_T1w_space-"$space_variant"_variant_dtissue.nii.gz"
+dtissue_epi_masked=$FMRIPREP_DIR/$subject"/dbscan/"$subject"_T1w_space-"$space_variant"_variant_dtissue_masked.nii.gz"
+
+#flirt the masks and maps to be in epi space
+flirt -in $gm_prob_T1w -out $gm_prob_epi -ref $func -usesqform
+flirt -in $mask_T1w -out $mask_epi -ref $func -usesqform
+flirt -in $dtissue_T1w -out $dtissue_epi -ref $func -usesqform -interp nearestneighbour
+
+# Have this mean epi for the purposes of using this for a mask later on
+mean_epi_targ=$FMRIPREP_DIR/$subject'/dbscan/'$subject"_task-rest_bold_space-"$space_variant"_variant-AROMAnonaggr+2P_preproc_mean.nii.gz"
+
+# Now take the tissue mask and explicity mask it off to where the mean $func image is > 0
+fslmaths $func -Tmean $mean_epi_targ
+fslmaths $dtissue_epi -mas $mean_epi_targ $dtissue_epi_masked
+
+
+gm_dbscan=$FMRIPREP_DIR/$subject"/dbscan/"$subject"_T1w_space-"$space_variant"_variant_gm_mask.nii.gz"
+
+export func
+export gm_prob_epi
+export gm_dbscan
+export mask_epi
+export dtissue_epi_masked
+
+matlab -r  "create_mask_dbscan;exit" -nodisplay -nodesktop -nosplash
+
+# Now prepare data with this other functional set!
+func=$FMRIPREP_DIR/$subject'/func/'$subject"_task-rest_bold_space-"$space_variant"_variant-24P+8P_preproc.nii.gz"
+matlab -r  "create_mask_dbscan;exit" -nodisplay -nodesktop -nosplash
+
