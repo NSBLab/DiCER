@@ -468,10 +468,10 @@ df.to_csv(fileNameRegressors)
 print('Saved %u DBSCAN regressors to %s' % (numRegressors,fileNameRegressors))
 
 
-fileNameRegressors = os.path.join(saveCSV_dir,('%s_dbscan_%s_regressor_count.csv' % (subjectName,paramSet)))
-df = pd.DataFrame(numRegressorPerIteration)
-df.to_csv(numRegressorPerIteration)
-print('Saved %u DBSCAN number of regressors to %s' % (numRegressors,fileNameRegressors))
+# fileNameRegressors = os.path.join(saveCSV_dir,('%s_dbscan_%s_regressor_count.csv' % (subjectName,paramSet)))
+# df = pd.DataFrame(numRegressorPerIteration)
+# df.to_csv(numRegressorPerIteration)
+# print('Saved %u DBSCAN number of regressors to %s' % (numRegressors,fileNameRegressors))
 
 #-------------------------------------------------------------------------------
 # Save spatial maps at each iteration to niftis:
