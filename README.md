@@ -47,3 +47,6 @@ sh DiCER_lightweight.sh -i $func -t $tissueSeg -w $pathToFiles -s SUBJECT_1 -d
 where tissueSeg is a nifti which has the labels, 1=CSF,2=GM,3=WM,4=Restricted GM i.e. Grey matter that is either eroded or just a subset of GM. The last label, 4, is the label that DiCER samples off to peform the correction. 
 
 Note: this gives you a very lightweight HTML report, if you want more than just a light report you need to specify a confounds.tsv file where importantly the 4th column is a DVARS calculation and the 7th Column is a FD calculation (the rest of the .tsv can contains zeros).
+
+# Notes/warnings
+Currently DiCER is suited for whole-brain rsfMRI studies and all the tools are tailored for this purpose. However estimation of the noisy regressors can come from a very coarse representation of the data. So working with higher resolution data can be achieved by using a downsampled version of the data and then applying fsl_regfilt with the discovered signals to the original resolution. Currently this is being tested on higher-resolution 7T fMRI task and rest data. 
