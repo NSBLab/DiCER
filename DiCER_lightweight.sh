@@ -114,7 +114,8 @@ if $detrend;then
 	fslmaths $tissue_mask -bin $mask_epi
 	sh fmriprepProcess/preprocess_fmriprep.sh $input $output_detrended $output_folder $mask_epi
 	# Now change all the inputs to work on the deterended versions	
-	input=$output_detrended	
+	input=$output_detrended
+	input_file=$base_input"_detrended_hpf.nii.gz"
 fi
 
 
