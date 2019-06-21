@@ -27,7 +27,6 @@ sh carpetCleaner.sh
 To check out some of the reporting you get with DiCER please have a look at:
 https://bmhlab.github.io/DiCER_results/
 
-## If you would like to use DiCER with your data please download the repository and feel free to contact us via Issues within this repository!
 
 # DICER_lightweight
 If you have data that has not been fmriprep'd you can still run this code by running DiCER_lightweight
@@ -50,3 +49,6 @@ Note: this gives you a very lightweight HTML report, if you want more than just 
 
 # Notes/warnings
 Currently DiCER is suited for whole-brain rsfMRI studies and all the tools are tailored for this purpose. However estimation of the noisy regressors can come from a very coarse representation of the data. So working with higher resolution data can be achieved by using a downsampled version of the data and then applying fsl_regfilt with the discovered signals to the original resolution. Currently this is being tested on higher-resolution 7T fMRI task and rest data. 
+
+
+## If you would like to use DiCER with your data please download the repository and feel free to contact us via Issues within this repository!
