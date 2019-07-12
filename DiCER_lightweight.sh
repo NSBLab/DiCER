@@ -13,6 +13,7 @@ This tool performs (Di)ffuse (C)luster (E)stimation and (R)egression on data wit
 Usage with tissue map: DiCER_lightweights.sh -i input_nifti -t tissue_file -w output_folder -s subjectID -c confounds.tsv\n\n
 Usage without tissue map: DiCER_lightweights.sh -i input_nifti -a T1w -w output_folder -s subjectID -c confounds.tsv\n\n
 Optional (and recommonded) flag is -d, this detrends and high-pass filters the data. This allows better estimation of regressors, and is a very light cleaning of your data.\n
+Optional (may be needed for high-res data) flag -p ds_factor (e.g. -p 3), this enforces a sparse-sampling of the tissue mask based on the global signal correlation, this needed for high res data to be tractable. \n
 Kevin Aquino. 2019, email: kevin.aquino@monash.edu\n\n\nDiCER website: https://github.com/BMHLab/DiCER \n\n"
 
 }
@@ -21,6 +22,7 @@ tissue=""
 detrend="false"
 makeTissueMap="false"
 use_confounds="false"
+ds_factor="0"
 
 # Everything will be in g-zipped niftis
 FSLOUTPUTTYPE=NIFTI_GZ
@@ -37,6 +39,7 @@ while getopts 'i:t:a:w:s:c:dh' flag; do
 	c) 	confounds="${OPTARG}" 
 		use_confounds="true";;  
 	d) 	detrend="true" ;;  
+	p)  ds_factor="${OPTARG}"
 	h) print_usage 
 		exit 1;;
     *) print_usage
@@ -97,7 +100,7 @@ if $makeTissueMap;then
 	fslmaths $mean_ts -div $max -thr 0.3 -bin $gm_mask_restrictive
 	fslmaths $gm_mask_restrictive -mul $gm_mask_tmp -mul 2 $gm_mask_restrictive
 
-	# Now we have everything to work with and combine it all together now
+	# Now we have everything to work with and combine it all together now (fix up too many volumes)
 	tissue_mask=$output_folder$subject"_dtissue_func.nii.gz"
 	fslmaths $seg_temp -add $gm_mask_restrictive $tissue_mask
 
@@ -118,6 +121,14 @@ if $detrend;then
 	input_file=$base_input"_detrended_hpf.nii.gz"
 fi
 
+if $ds_factor>0;then
+	echo "\n Creating a sparse-sampling of the tissue mask based on the correlation to the global signal for each voxel.\n"
+	python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz"
+	base_tissue_mask=`basename $tissue_mask .nii.gz` 
+	tissue_mask_ds=$output_folder$base_tissue_mask"_dsFactor_"$ds_factor".nii.gz"
+	python utils/sparse_sample_tissue.py -o $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz" -ds $ds_factor -ts $tissue_mask -tsd $tissue_mask_ds
+	tissue_mask=$tissue_mask_ds
+fi
 
 echo "\n\nPerfoming DiCER..\n\n\n"	
 
