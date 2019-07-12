@@ -72,10 +72,20 @@ def main(raw_args=None):
 
 	# Now get the GS reorder
 
-	gm_ordered_inds = generate_ordering(gm_time_series)
 	gm_dbscan_ordered_inds = generate_ordering(gm_dbscan_time_series)
-	wm_ordered_inds = generate_ordering(wm_time_series)
-	csf_ordered_inds = generate_ordering(csf_time_series)
+
+	# A little clause here just incase you are not defining any other regions, make them empty
+	gm_ordered_inds =[]
+	wm_ordered_inds =[]
+	csf_ordered_inds =[]
+
+	if (np.shape(GM_vox)[0]>0):
+		gm_ordered_inds = generate_ordering(gm_time_series)
+ 	if (np.shape(WM_vox)[0]>0):
+		wm_ordered_inds = generate_ordering(wm_time_series)		
+	if (np.shape(CSF_vox)[0]>0):
+		csf_ordered_inds = generate_ordering(csf_time_series)
+	
 
 	# Now make a new matrix and save the nifti!
 	tissue[GM_vox] = gm_ordered_inds
