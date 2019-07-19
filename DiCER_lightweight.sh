@@ -10,10 +10,17 @@
 print_usage() {
   printf "DiCER_lightweight\n
 This tool performs (Di)ffuse (C)luster (E)stimation and (R)egression on data without fmriprep preprocessing. Here, we take fmri data that has NOT been detrended or demeaned (important!) and either a tissue tissue classification which is a file that has the same dimensions as the functional image with the following labels: 1=CSF,2=GM,3=WM,4=Restricted GM this restricted GM just takes the GM mask and takes the top 70 percent of signals (i.e. top 70 relative to the mean) to estimate noisy signals.\n
-Usage with tissue map: DiCER_lightweights.sh -i input_nifti -t tissue_file -w output_folder -s subjectID -c confounds.tsv\n\n
-Usage without tissue map: DiCER_lightweights.sh -i input_nifti -a T1w -w output_folder -s subjectID -c confounds.tsv\n\n
+Usage with tissue map: DiCER_lightweight.sh -i input_nifti -t tissue_file -w output_folder -s subjectID -c confounds.tsv\n\n
+Usage without tissue map: DiCER_lightweight.sh -i input_nifti -a T1w -w output_folder -s subjectID -c confounds.tsv\n\n
 Optional (and recommonded) flag is -d, this detrends and high-pass filters the data. This allows better estimation of regressors, and is a very light cleaning of your data.\n
 Optional (may be needed for high-res data) flag -p ds_factor (e.g. -p 3), this enforces a sparse-sampling of the tissue mask based on the global signal correlation, this needed for high res data to be tractable. \n
+\n
+\n
+SURFACE fMRI DATA\n
+If you happen to have surface-registered data with freesurfer (or equivalent) this can work by the following\n
+DiCER_lightweight.sh -f -i input_nifti -w output_folder -s subjectID -p 6\n\n
+Note, the surface file here will be in a nifti format (you can change this with tools like mri_convert etc) in the standard \n
+type of of input that freesurfer uses for FS-FAST. Also downsampling is needed, -p 6 is recommened for data on things such as fsaverage \n
 Kevin Aquino. 2019, email: kevin.aquino@monash.edu\n\n\nDiCER website: https://github.com/BMHLab/DiCER \n\n"
 
 }
@@ -23,12 +30,13 @@ detrend="false"
 makeTissueMap="false"
 use_confounds="false"
 ds_factor="0"
+freesurfer="false"
 
 # Everything will be in g-zipped niftis
 FSLOUTPUTTYPE=NIFTI_GZ
 
 # Have to make options if you need to generate a tissue file do so i.e. only if you specifiy the tissue file
-while getopts 'i:t:a:w:s:c:dh' flag; do
+while getopts 'i:t:a:w:s:c:d:p:fh' flag; do
   case "${flag}" in
     i)  input_file="${OPTARG}" ;;  
     t)  tissue="${OPTARG}" ;;  
@@ -39,7 +47,8 @@ while getopts 'i:t:a:w:s:c:dh' flag; do
 	c) 	confounds="${OPTARG}" 
 		use_confounds="true";;  
 	d) 	detrend="true" ;;  
-	p)  ds_factor="${OPTARG}"
+	p)  ds_factor="${OPTARG}";;
+	f) 	freesurfer="true" ;;
 	h) print_usage 
 		exit 1;;
     *) print_usage
@@ -57,9 +66,19 @@ fi
 # Setting up extra variables once you have everything!
 folder=$output_folder #this is the working directory.
 input=$output_folder$input_file
-tissue_mask=$output_folder$tissue
 confounds=$output_folder$confounds
 
+
+# Surface niftis!
+if $freesurfer;then
+	# Here just making a tissue file based just on the surface time series, i.e. setting it that all time series on the vertices are used in the estimation of regressors.
+	fslmaths $input -Tmean -abs -bin -mul 4 $output_folder"tissue.nii.gz"
+	tissue="tissue.nii.gz"
+	# Here just making sure that the tissue map isn't made.
+	makeTissueMap="false"	
+fi
+
+tissue_mask=$output_folder$tissue
 
 
 # Make the tissue map if you have specificed the tissue map!
@@ -67,7 +86,7 @@ confounds=$output_folder$confounds
 # TISSUE SEGMENTATION!
 # 
 if $makeTissueMap;then
-	echo "\n\nPeforming FAST tissue segmentation with anatomical image $anatomical\n"
+	printf "\n\nPeforming FAST tissue segmentation with anatomical image $anatomical\n"
 	# Perform FAST segmentation:
 	fast -o $output_folder"/tmp_dir/"$subject $output_folder"/"$anatomical
 
@@ -104,12 +123,12 @@ if $makeTissueMap;then
 	tissue_mask=$output_folder$subject"_dtissue_func.nii.gz"
 	fslmaths $seg_temp -add $gm_mask_restrictive $tissue_mask
 
-	echo "\n\nSaved tissue mask in functional space and saved as: $tissue_mask\n"	
+	printf "\n\nSaved tissue mask in functional space and saved as: $tissue_mask\n"	
 fi
 
 #  Detrending and high-pass filtering data::
 if $detrend;then
-	echo "\n\Detrending and high-pass filtering $input..\n\n\n"		
+	printf "\n\Detrending and high-pass filtering $input..\n\n\n"		
 	base_input=`basename $input .nii.gz`
 	output_detrended=$output_folder$base_input"_detrended_hpf.nii.gz"
 	# Find a mask epi
@@ -121,8 +140,12 @@ if $detrend;then
 	input_file=$base_input"_detrended_hpf.nii.gz"
 fi
 
-if $ds_factor>0;then
-	echo "\n Creating a sparse-sampling of the tissue mask based on the correlation to the global signal for each voxel.\n"
+if [ $ds_factor -gt 0 ];then
+	printf "\n Creating a sparse-sampling of the tissue mask based on the correlation to the global signal for each voxel.\n"
+	echo $input
+	echo $tissue_mask
+	echo $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz"
+	echo ""
 	python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz"
 	base_tissue_mask=`basename $tissue_mask .nii.gz` 
 	tissue_mask_ds=$output_folder$base_tissue_mask"_dsFactor_"$ds_factor".nii.gz"
@@ -130,8 +153,7 @@ if $ds_factor>0;then
 	tissue_mask=$tissue_mask_ds
 fi
 
-echo "\n\nPerfoming DiCER..\n\n\n"	
-
+printf "\n\nPerfoming DiCER..\n\n\n"	
 
 python carpetCleaning/clusterCorrect.py $tissue_mask '.' $input $folder $subject
 
@@ -142,7 +164,7 @@ regressor_dbscan=$subject"_dbscan_liberal_regressors.csv"
 base_dicer_o=`basename $input .nii.gz`
 dicer_output=$output_folder$base_dicer_o"_dbscan.nii.gz"
 
-echo "\n\nRegressing $input with DiCER signals and clean output is at $dicer_output \n\n\n"	
+printf "\n\nRegressing $input with DiCER signals and clean output is at $dicer_output \n\n\n"	
 python carpetCleaning/vacuum_dbscan.py -f $input_file -db $regressor_dbscan -s $subject -d $folder
 
 # Next stage: do the reporting, all done through "tapestry"
@@ -151,12 +173,12 @@ python carpetCleaning/vacuum_dbscan.py -f $input_file -db $regressor_dbscan -s $
 export MPLBACKEND="agg"
 
 # Do the cluster re-ordering:
-echo "\n\nPeforming Cluster re-ordering of $input \n\n\n"	
+printf "\n\nPeforming Cluster re-ordering of $input \n\n\n"	
 python fmriprepProcess/clusterReorder.py $tissue_mask '.' $input $folder $subject
 cluster_tissue_ordering=$output_folder$base_dicer_o"_clusterorder.nii.gz"
 
 # Run the automated report:
-echo "\n\nRunning the carpet reports! This is to visualize the data in a way to evaluate the corrections \n\n\n"	
+printf "\n\nRunning the carpet reports! This is to visualize the data in a way to evaluate the corrections \n\n\n"	
 
 
 # Here is a way to use confounds in the report, if they are not called then they will NOT appear in the automated report

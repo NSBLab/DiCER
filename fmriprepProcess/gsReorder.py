@@ -46,7 +46,7 @@ def main(raw_args=None):
 	dtissue = args.dtissue
 	outputFileName = args.outputFileName
  	# print('In gsReorder.py')
-	# Once we have the files lets import some stuff
+	# Once we have the files lets import some stuff	
 	time_series,dimsF	= mrutils.import_nifti(func)
 	tissue,dimsTs 		= mrutils.import_nifti(dtissue)
 
@@ -101,6 +101,8 @@ def generate_ordering(time_series_tissue):
 	# Get the mean signal
 	mean_signal = np.nanmean(X_z,axis=0)
 	# Calculate correlations
+	import pdb;pdb.set_trace()
+	# Heavy on memory - have to fix with a for loop.
 	corr = np.corrcoef(X_z,mean_signal)	
 	# Restrict the correlations to just look at the correlations of all time points with the mean signal
 	corr = (corr[corr.shape[0]-1,0:corr.shape[0]-1])
