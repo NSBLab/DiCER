@@ -101,7 +101,7 @@ def generate_ordering(time_series_tissue):
 	# Get the mean signal
 	mean_signal = np.nanmean(X_z,axis=0)
 	# Calculate correlations
-	import pdb;pdb.set_trace()
+	# import pdb;pdb.set_trace()
 	# Heavy on memory - have to fix with a for loop.
 	corr = np.corrcoef(X_z,mean_signal)	
 	# Restrict the correlations to just look at the correlations of all time points with the mean signal
