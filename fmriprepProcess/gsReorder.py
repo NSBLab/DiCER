@@ -85,7 +85,7 @@ def main(raw_args=None):
 	if (np.shape(CSF_vox)[0]>0):
 		csf_ordered_inds = generate_ordering(csf_time_series)
 	
-	import pdb;pdb.set_trace()
+	# import pdb;pdb.set_trace()
 	# Now make a new matrix and save the nifti!
 	tissue[GM_vox] = gm_ordered_inds
 	tissue[GMdbscan_vox] = gm_dbscan_ordered_inds
@@ -110,10 +110,8 @@ def generate_ordering(time_series_tissue):
 		corr[ind] = co[1,0]
 	print("Correlations took --- %s seconds ---" % (time.time() - start_time))
 
-	# import pdb;pdb.set_trace()
-
 	# Now retrieve the ordered indices.
-	orderedIndex = np.argsort(corr)
+	orderedIndex = np.argsort(corr[:,0])
  	return orderedIndex
 
 if __name__ == '__main__':
