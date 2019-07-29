@@ -63,15 +63,14 @@ def main(raw_args=None):
 	# GM_vox=np.setdiff1d(GM_seg,mask_voxels[0])
 	WM_vox=np.squeeze(np.where(tissue==WM_ind))
 	CSF_vox=np.squeeze(np.where(tissue==CSF_ind))
-
+	# import pdb;pdb.set_trace()
 	# Probably have to get rid of nans/zeros etc -- better not done here, this here is just to visualize	
 	gm_time_series = time_series[GM_vox,:]
 	gm_dbscan_time_series = time_series[GMdbscan_vox,:]
 	wm_time_series = time_series[WM_vox,:]
 	csf_time_series = time_series[CSF_vox,:]
 
-	# Now get the GS reorder
-
+	# Now get the GS reorder	
 	gm_dbscan_ordered_inds = generate_ordering(gm_dbscan_time_series)
 
 	# A little clause here just incase you are not defining any other regions, make them empty
@@ -100,12 +99,19 @@ def generate_ordering(time_series_tissue):
 	X_z = stats.zscore(time_series_tissue,axis=1,ddof=1)
 	# Get the mean signal
 	mean_signal = np.nanmean(X_z,axis=0)
-	# Calculate correlations
+
+	# Calculate correlations, this is heavy on memory so now do this as a loop (we dont need the full correlation matrix)
+	corr = np.zeros([X_z.shape[1],1])
+
+	import time
+	start_time = time.time()
+	for ind in range(0,X_z.shape[1]):
+		co = np.corrcoef(X_z[ind,:],mean_signal)	
+		corr[ind] = co[1,0]
+	print("Correlations took --- %s seconds ---" % (time.time() - start_time))
+
 	# import pdb;pdb.set_trace()
-	# Heavy on memory - have to fix with a for loop.
-	corr = np.corrcoef(X_z,mean_signal)	
-	# Restrict the correlations to just look at the correlations of all time points with the mean signal
-	corr = (corr[corr.shape[0]-1,0:corr.shape[0]-1])
+
 	# Now retrieve the ordered indices.
 	orderedIndex = np.argsort(corr)
  	return orderedIndex
