@@ -85,7 +85,7 @@ def main(raw_args=None):
 	if (np.shape(CSF_vox)[0]>0):
 		csf_ordered_inds = generate_ordering(csf_time_series)
 	
-
+	import pdb;pdb.set_trace()
 	# Now make a new matrix and save the nifti!
 	tissue[GM_vox] = gm_ordered_inds
 	tissue[GMdbscan_vox] = gm_dbscan_ordered_inds
@@ -101,11 +101,11 @@ def generate_ordering(time_series_tissue):
 	mean_signal = np.nanmean(X_z,axis=0)
 
 	# Calculate correlations, this is heavy on memory so now do this as a loop (we dont need the full correlation matrix)
-	corr = np.zeros([X_z.shape[1],1])
+	corr = np.zeros([X_z.shape[0],1])
 
 	import time
 	start_time = time.time()
-	for ind in range(0,X_z.shape[1]):
+	for ind in range(0,X_z.shape[0]):
 		co = np.corrcoef(X_z[ind,:],mean_signal)	
 		corr[ind] = co[1,0]
 	print("Correlations took --- %s seconds ---" % (time.time() - start_time))
