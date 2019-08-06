@@ -71,11 +71,18 @@ confounds=$output_folder$confounds
 
 # Surface niftis!
 if $freesurfer;then
+	# Change the dimensions of the nifti to make it work with the rest of the script, currently doesn't handle giftis or ciftis directly, making this shortcut to have the code work all the way through
+	outFile=$output_folder"/func_temp.nii.gz"
+	python hcp_processing/reshapeSurfaceNifti.py -f $input -o $outFile
+	input=$outFile
+	orig=$input_file
+	input_file="func_temp.nii.gz"
 	# Here just making a tissue file based just on the surface time series, i.e. setting it that all time series on the vertices are used in the estimation of regressors.
 	fslmaths $input -Tmean -abs -bin -mul 4 $output_folder"tissue.nii.gz"
 	tissue="tissue.nii.gz"
 	# Here just making sure that the tissue map isn't made.
 	makeTissueMap="false"	
+	# will probably have to re-arrange the nifti -- then at the end of the whole shebang will have to re-sort.
 fi
 
 tissue_mask=$output_folder$tissue
@@ -175,7 +182,12 @@ export MPLBACKEND="agg"
 # Do the cluster re-ordering:
 printf "\n\nPeforming Cluster re-ordering of $input \n\n\n"	
 python fmriprepProcess/clusterReorder.py $tissue_mask '.' $input $folder $subject
-cluster_tissue_ordering=$output_folder$base_dicer_o"_clusterorder.nii.gz"
+# if $freesurfer;then
+# 	cluster_tissue_ordering=$output_folder"/tmp_dir/"$base_dicer_o"_clusterorder.nii.gz"	
+# else
+cluster_tissue_ordering=$output_folder$base_dicer_o"_clusterorder.nii.gz"	
+# fi
+
 
 # Run the automated report:
 printf "\n\nRunning the carpet reports! This is to visualize the data in a way to evaluate the corrections \n\n\n"	
@@ -186,4 +198,14 @@ if $use_confounds;then
 	python carpetReport/tapestry.py -f $input","$dicer_output -fl "INPUT,DICER"  -o $cluster_tissue_ordering -l "CLUST" -s $subject -d $output_folder -ts $tissue_mask -reg $output_folder$regressor_dbscan -cf $confounds
 else
 	python carpetReport/tapestry.py -f $input","$dicer_output -fl "INPUT,DICER"  -o $cluster_tissue_ordering -l "CLUST" -s $subject -d $output_folder -ts $tissue_mask
+fi
+
+# Have to at the end work with vacuuming the original file
+
+
+# Surface niftis!
+if $freesurfer;then
+	printf "\n\n Now using the regression time series and regressing them from the original input \n\n\n"	
+	input=$output_folder$input_file
+	python carpetCleaning/vacuum_dbscan.py -f $orig -db $regressor_dbscan -s $subject -d $folder
 fi
