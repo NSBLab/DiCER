@@ -188,16 +188,29 @@ python fmriprepProcess/clusterReorder.py $tissue_mask '.' $input $folder $subjec
 cluster_tissue_ordering=$output_folder$base_dicer_o"_clusterorder.nii.gz"	
 # fi
 
+printf "\n\nPeforming GS re-ordering of $input (again use the mask) \n\n\n"	
+python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of $output_folder"/"$subject_"gsReorder.nii.gz"
+gs_reordering_file=$output_folder"/"$subject_"gsReorder.nii.gz"
+
+
+printf "\n\nPeforming GMR of $orig \n\n\n"	
+gm_signal=$output_folder"/"$subject_"GMsignal.txt"
+fslmeants -i $input -o $gm_signal
+GMR_output=$output_folder$base_dicer_o"_GMR.nii.gz"
+fsl_regfilt -i $input -d $gm_signal -f 1 -o $GMR_output
+
 
 # Run the automated report:
 printf "\n\nRunning the carpet reports! This is to visualize the data in a way to evaluate the corrections \n\n\n"	
 
 
+
+
 # Here is a way to use confounds in the report, if they are not called then they will NOT appear in the automated report
 if $use_confounds;then
-	python carpetReport/tapestry.py -f $input","$dicer_output -fl "INPUT,DICER"  -o $cluster_tissue_ordering -l "CLUST" -s $subject -d $output_folder -ts $tissue_mask -reg $output_folder$regressor_dbscan -cf $confounds
+	python carpetReport/tapestry.py -f $input","$GMR_output","$dicer_output -fl "INPUT,GMR,DICER"  -o $cluster_tissue_ordering,$gs_reordering_file -l "CLUST,GSO" -s $subject -d $output_folder -ts $tissue_mask -reg $output_folder$regressor_dbscan -cf $confounds
 else
-	python carpetReport/tapestry.py -f $input","$dicer_output -fl "INPUT,DICER"  -o $cluster_tissue_ordering -l "CLUST" -s $subject -d $output_folder -ts $tissue_mask
+	python carpetReport/tapestry.py -f $input","$GMR_output","$dicer_output -fl "INPUT,GMR,DICER"  -o $cluster_tissue_ordering,$gs_reordering_file -l "CLUST,GSO" -s $subject -d $output_folder -ts $tissue_mask
 fi
 
 # Have to at the end work with vacuuming the original file
@@ -207,5 +220,5 @@ fi
 if $freesurfer;then
 	printf "\n\n Now using the regression time series and regressing them from the original input \n\n\n"	
 	input=$output_folder$input_file
-	python carpetCleaning/vacuum_dbscan.py -f $orig -db $regressor_dbscan -s $subject -d $folder
+	python carpetCleaning/vacuum_dbscan.py -f $orig -db $regressor_dbscan -s $subject -d $folder	
 fi
