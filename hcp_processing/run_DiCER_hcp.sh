@@ -51,7 +51,7 @@ wb_command -cifti-convert -to-nifti $working_hcp_dir/$subject/$subject"_all_rest
 # Filter out session effects (its easy to see really)
 fsl_regfilt -i $working_hcp_dir/$subject/$subject"_rest.nii.gz" -d ~/projects/DiCER/hcp_processing/restStopPoints.tsv -f 1,2,3,4 -o $working_hcp_dir/$subject/$subject"_rest_dm.nii.gz"
 # Perform DiCER on the resting state:
-sh DiCER_lightweight.sh -f -i $subject"_rest_dm.nii.gz"  -w $working_hcp_dir/$subject/ -s $subject -p 5
+sh DiCER_lightweight.sh -f -i $subject"_rest_dm.nii.gz"  -w $working_hcp_dir/$subject/ -s $subject"_rest" -p 5
 
 # ON TASK:
 
@@ -61,16 +61,7 @@ fsl_regfilt -i $working_hcp_dir/$subject/$subject"_task.nii.gz" -d ~/projects/Di
 # Perform DiCER on the task data:
 sh DiCER_lightweight.sh -f -i $subject"_task_dm.nii.gz"  -w $working_hcp_dir/$subject/ -s $subject"_task" -p 5
 
+
 echo -e "\t\t\t --------------------------- "
 echo -e "\t\t\t ----- ${SLURM_ARRAY_TASK_ID} ${subject} DiCER Finished - enjoy!----- "
 echo -e "\t\t\t --------------------------- \n"
-
-
-
-
-
-
-
-
-
-
