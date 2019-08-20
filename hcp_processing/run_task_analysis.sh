@@ -39,7 +39,7 @@ task[6]='WM'
 # FUNCTION DECLARATIONS (CALLED AFTER)
 copying_task_results () {
 	# In here copy the task results to somewhere else provided by the argument
-	for i in `seq 0 6`;
+	for i in `seq 0 0`;
 		do			
 			cp -r $subject"/MNINonLinear/Results/tfMRI_"${task[i]}"/tfMRI_"${task[i]}"_hp200_s2_level2_MSMAll.feat" $working_hcp_dir"/"$subject"/"$1
 		done
@@ -58,7 +58,7 @@ regress_out_noise () {
 	python split_up_regressor.py -reg $totalRegressor -folderBase $working_hcp_dir/$subject/$preproType"_"
 
 	# In here when you choose what you want to regress, also make copies of original signal
-	for i in `seq 0 6`;
+	for i in `seq 0 0`;
 	do	
 		resultsFolderBase=$StudyFolder"/"$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
 		PE[0]='LR'
@@ -102,7 +102,7 @@ change_task_input () {
 	# Change the inputs to the task analysis! this is done to make it automated and transparent
 	preproType=$1
 
-	for i in `seq 0 6`;
+	for i in `seq 0 0`;
 	do	
 		resultsFolderBase=$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
 		PE[0]='LR'
@@ -133,8 +133,11 @@ copying_task_results "standard"
 change_task_input "DiCER"
 sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
 copying_task_results "DiCER"
+# Here now resetting it so that it goes back to the standard input (important!! so that it doesn't screw up new runs!)
+change_task_input "standard"
 
 # STEP 4: do the same for GMR
 # change_task_input "GMR"
 # sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
 # copying_task_results "GMR"
+# change_task_input "standard"
