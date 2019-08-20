@@ -48,8 +48,8 @@ def main(raw_args=None):
     parser = ArgumentParser(epilog="split_up_regressor.py -- A function to split up the task DiCER regressors so that there is one for each task. Kevin Aquino 2019 BMH")
     parser.add_argument("-reg", dest="reg",
         help="Task regressor", metavar="DiCER_regressor.tsv")
-    parser.add_argument("-folder", dest="out",
-        help="The saved filed name for FD", metavar="~/")
+    parser.add_argument("-folderBase", dest="out",
+        help="The basename with path for the regressor files", metavar="~/preproMethod")
 
     args = parser.parse_args(raw_args)
 
