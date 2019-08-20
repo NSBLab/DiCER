@@ -15,6 +15,7 @@
 
 
 SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
+SLURM_ARRAY_TASK_ID=1
 
 export subject=$(sed -n "${SLURM_ARRAY_TASK_ID}p" ${SUBJECT_LIST})
 echo -e "\t\t\t --------------------------- "
@@ -23,7 +24,6 @@ echo -e "\t\t\t --------------------------- \n"
 
 #Load connectome module
 module load connectome
-
 export Subjlist=$subject
 export StudyFolder=/scratch/kg98/HCP_grayordinates_processed_temporary/
 working_hcp_dir=/scratch/kg98/HCP_grayordinates_processed/
@@ -50,7 +50,7 @@ regress_out_noise () {
 	preproType=$1
 	case $preproType in
 		# Here first choose the right regressor either the GMR variant or the DiCER one...
-		GMR) totalRegressor=$working_hcp_dir/$subject/$subject"_task_"GMsignal.txt ;;
+		GMR) totalRegressor=$working_hcp_dir/$subject/$subject"_task_GMsignal.txt" ;;
 		DiCER) totalRegressor=$working_hcp_dir/$subject/$subject"_task_dbscan_liberal_regressors.tsv" ;;			
 	esac
 
@@ -60,19 +60,19 @@ regress_out_noise () {
 	# In here when you choose what you want to regress, also make copies of original signal
 	for i in `seq 0 6`;
 	do	
-		resultsFolderBase=$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
+		resultsFolderBase=$StudyFolder"/"$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
 		PE[0]='LR'
 		PE[1]='RL'
 		for pd in `seq 0 1`;
 		do
 			taskFolder=$resultsFolderBase"_"${PE[pd]}
 			# If statement if we are looking at DiCER (done first) then make a copy as well of the original files
-			if [preproType="DiCER"]
+			if [ $preproType = "DiCER" ]
 			then
 				cp $taskFolder"/tfMRI_"${task[i]}"_"${PE[pd]}"_Atlas_MSMAll.dtseries.nii" $taskFolder"/tfMRI_"${task[i]}"_"${PE[pd]}"_standard_Atlas_MSMAll.dtseries.nii"
 			fi
 			# Get the regressor variable for later use
-			regressor=$working_hcp_dir/$subject/$preproType"_"${task[i]}"_"${PE[pd]}".txt"
+			regressor=$working_hcp_dir/$subject/$preproType"_"${task[i]}"_"${PE[pd]}".tsv"
 
 			# Now do the regression for each file, first convert to fake nifti then do the regression
 			wb_command -cifti-convert -to-nifti $taskFolder"/tfMRI_"${task[i]}"_"${PE[pd]}"_Atlas_MSMAll.dtseries.nii" $taskFolder"/tfMRI_"${task[i]}"_"${PE[pd]}"_FAKE_NIFTI_"$preproType".nii.gz"
@@ -112,8 +112,6 @@ change_task_input () {
 			taskFolder=$resultsFolderBase"_"${PE[pd]}
 			# Trick here, copy the preprocessed CIFTI to the default type that is used with the task, this then makes all the code work nicely
 			cp $taskFolder"/tfMRI_"${task[i]}"_"${PE[pd]}"_"$preproType"_Atlas_MSMAll.dtseries.nii" $taskFolder"/tfMRI_"${task[i]}"_"${PE[pd]}"_Atlas_MSMAll.dtseries.nii"
-		fi
-
 		done
 		
 	done
@@ -122,21 +120,21 @@ change_task_input () {
 
 
 # STEP 1: Performing the regession for DiCER and GMR
-sh regress_out_noise DiCER
+regress_out_noise "DiCER"
 # sh regress_out_noise GMR
 
 # STEP 2: Run the task GLMs for the standard protocol:
 sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
 # And copy the results back to a differnt folder
-sh copying_task_results standard
+copying_task_results "standard"
 
 
 # STEP 3: Change the file to now work on the DiCER output tricky stuff here just to rename the file to make it work nicely with the code already set up
-sh change_task_input DiCER
+change_task_input "DiCER"
 sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
-sh copying_task_results DiCER
+copying_task_results "DiCER"
 
 # STEP 4: do the same for GMR
-# sh change_task_input GMR
+# change_task_input "GMR"
 # sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
-# sh copying_task_results GMR
+# copying_task_results "GMR"
