@@ -194,7 +194,7 @@ gs_reordering_file=$output_folder"/"$subject_"gsReorder.nii.gz"
 
 
 printf "\n\nPeforming GMR of $orig \n\n\n"	
-gm_signal=$output_folder"/"$subject_"GMsignal.txt"
+gm_signal=$output_folder"/"$subject"_GMsignal.txt"
 fslmeants -i $input -o $gm_signal
 GMR_output=$output_folder$base_dicer_o"_GMR.nii.gz"
 fsl_regfilt -i $input -d $gm_signal -f 1 -o $GMR_output
