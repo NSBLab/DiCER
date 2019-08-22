@@ -11,7 +11,8 @@
 #SBATCH --export=ALL
 #SBATCH --mem-per-cpu=32000
 #SBATCH -A kg98
-#SBATCH --array=1-100
+#SBATCH --array=1-282
+# SBATCH --array=101
 
 
 SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
