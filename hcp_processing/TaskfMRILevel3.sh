@@ -249,7 +249,7 @@ for Analysis in ${Analyses} ; do
 	      echo "ERROR: ${cifti_in} does not exist"
 	      exit -1
 	  fi
-          ${CARET7DIR}/wb_command -cifti-convert -to-nifti ${cifti_in} ${cifti_out}
+          wb_command -cifti-convert -to-nifti ${cifti_in} ${cifti_out}
 	done
 
       ## Subsection specific to Volume analysis
@@ -335,7 +335,7 @@ for Analysis in ${Analyses} ; do
       nifti_in=${LevelThreeFEATDirCopes}/${File}.nii.gz
       cifti_template=${LevelTwoFEATDir}/${Analysis}/cope1.feat/pe1.dtseries.nii
       cifti_out=${LevelThreeFEATDirCopes}/${File}.dtseries.nii
-      ${CARET7DIR}/wb_command -cifti-convert -from-nifti ${nifti_in} ${cifti_template} ${cifti_out} -reset-timepoints 1 1 
+      wb_command -cifti-convert -from-nifti ${nifti_in} ${cifti_template} ${cifti_out} -reset-timepoints 1 1 
       if [ "${DeleteIntermediates}" = "YES" ] ; then
 	rm ${LevelThreeFEATDirCopes}/${File}.nii.gz
       fi
@@ -349,7 +349,7 @@ for Analysis in ${Analyses} ; do
 	nifti_in=${LevelThreeFEATDirCopes}/cope${i}.feat/stats/${File}.nii.gz
 	cifti_template=${LevelTwoFEATDir}/${Analysis}/cope${i}.feat/pe1.dtseries.nii
 	cifti_out=${LevelThreeFEATDirCopes}/cope${i}.feat/stats/${File}.dtseries.nii
-        ${CARET7DIR}/wb_command -cifti-convert -from-nifti ${nifti_in} ${cifti_template} ${cifti_out} -reset-timepoints 1 1 
+        wb_command -cifti-convert -from-nifti ${nifti_in} ${cifti_template} ${cifti_out} -reset-timepoints 1 1 
 	if [ "${DeleteIntermediates}" = "YES" ] ; then
           rm ${LevelThreeFEATDirCopes}/cope${i}.feat/stats/${File}.nii.gz
 	fi
@@ -411,7 +411,7 @@ for Analysis in ${Analyses} ; do
 	    exit -1
 	  fi
 	  output=${LevelThreeFEATDir}/${prefix}.dscalar.nii
-	  ${CARET7DIR}/wb_command -cifti-convert-to-scalar ${input} ROW ${output} -name-file ${LevelThreeFEATDir}/Contrasttemp.txt
+	  wb_command -cifti-convert-to-scalar ${input} ROW ${output} -name-file ${LevelThreeFEATDir}/Contrasttemp.txt
 	  MergeSTRING=`echo "${MergeSTRING} -cifti ${output}"`
 
         ## Subsection specific to Volume analysis
@@ -421,7 +421,7 @@ for Analysis in ${Analyses} ; do
 	  echo "1 255 255 255 255" >> ${label_list}
 	  volume_to_label=${LevelThreeFEATDirCopes}/cope${i}.feat/stats/mask.nii.gz
 	  labeled_volume=${LevelThreeFEATDirCopes}/cope${i}.feat/stats/masktmp.nii.gz
-	  ${CARET7DIR}/wb_command -volume-label-import ${volume_to_label} ${label_list} ${labeled_volume} -discard-others -unlabeled-value 0
+	  wb_command -volume-label-import ${volume_to_label} ${label_list} ${labeled_volume} -discard-others -unlabeled-value 0
 	  rm ${label_list}
 	  prefix=${AnalysisName}_${LevelTwofsfName}_level3vol_${statistic}_${Contrast}${TemporalFilterString}${SmoothingString}${RegString}
 	  input=${LevelThreeFEATDirCopes}/cope${i}.feat/stats/${statistic}.nii.gz
@@ -431,8 +431,8 @@ for Analysis in ${Analyses} ; do
 	  fi
 	  outputdtseries=${LevelThreeFEATDir}/${prefix}.dtseries.nii
 	  outputdscalar=${LevelThreeFEATDir}/${prefix}.dscalar.nii
-	  ${CARET7DIR}/wb_command -cifti-create-dense-timeseries ${outputdtseries} -volume ${input} ${labeled_volume} -timestep 1 -timestart 1
-	  ${CARET7DIR}/wb_command -cifti-convert-to-scalar ${outputdtseries} ROW ${outputdscalar} -name-file ${LevelThreeFEATDir}/Contrasttemp.txt
+	  wb_command -cifti-create-dense-timeseries ${outputdtseries} -volume ${input} ${labeled_volume} -timestep 1 -timestart 1
+	  wb_command -cifti-convert-to-scalar ${outputdtseries} ROW ${outputdscalar} -name-file ${LevelThreeFEATDir}/Contrasttemp.txt
 	  rm ${outputdtseries} ${labeled_volume}
 	  MergeSTRING=`echo "${MergeSTRING} -cifti ${outputdscalar}"`
 
@@ -450,7 +450,7 @@ for Analysis in ${Analyses} ; do
       elif [ "$Analysis" = "StandardVolumeStats" ] ; then
 	  cifti_merge_out=${LevelThreeFEATDir}/${AnalysisName}_${LevelTwofsfName}_level3vol_${statistic}${TemporalFilterString}${SmoothingString}.dscalar.nii
       fi
-      ${CARET7DIR}/wb_command -cifti-merge ${cifti_merge_out} ${MergeSTRING}
+      wb_command -cifti-merge ${cifti_merge_out} ${MergeSTRING}
       if [ "${DeleteSingleContrastDscalars}" = "YES" ] ; then
 	  FilesToDelete=`echo ${MergeSTRING} | sed 's/-cifti//g'`
 	  rm ${FilesToDelete}
