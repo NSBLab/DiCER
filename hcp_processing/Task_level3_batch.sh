@@ -5,7 +5,7 @@
 #  environment: FSLDIR , HCPPIPEDIR , CARET7DIR
 
 ### Set up pipeline environment variables and software ###
-EnvironmentScript="/home/shared/HCP/taskfmri/phase2/tools/hcpdb_lev3_scripts/SetUpHCPPipeline.sh" #Pipeline environment script
+EnvironmentScript="/home/kaqu0001/HCPpipelines/Examples/Scripts/SetUpHCPPipeline.sh" #Pipeline environment script
 #. ${EnvironmentScript}  ## Sourcing of full EnvironmentScript not needed (assuming FSLDIR already in PATH)
 
 
@@ -21,6 +21,7 @@ EnvironmentScript="/home/shared/HCP/taskfmri/phase2/tools/hcpdb_lev3_scripts/Set
 ## The SubjectList can be space delimited or using "@" instead of spaces. 
 
 SubjectList="100206 100610 101006 101309 101915 102311 102513 106016 107321 107422 108121 108222 109830 110007 110613 112112 112314 112920 113922 116524 118124 118528 119126 121416 122822 124826 127630 129129 129634 130316 130417 131217 131823 132017 133019 134021 134223 134425 134728 135528 135730 136732 137229 137633 139233 139839 140117 141119 141826 144125"
+
 ##(2) Read your text file into a space-delimited list 
 ## First you must make your subject list into a single-column text file without headers.
 
@@ -75,7 +76,7 @@ for RegName in $RegNames ; do
     LevelTwofsfName=${LevelTwofMRIName}
     for FinalSmoothingFWHM in $SmoothingList ; do
 
-       ${HCPPIPEDIR}/TaskfMRIAnalysis/TaskfMRILevel3.sh \
+       TaskfMRILevel3.sh \
 	--path=$StudyFolder \
 	--subjectlist=$SubjectList \
 	--resultsfolder=$ResultsFolder \
