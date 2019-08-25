@@ -76,7 +76,7 @@ for RegName in $RegNames ; do
     LevelTwofsfName=${LevelTwofMRIName}
     for FinalSmoothingFWHM in $SmoothingList ; do
 
-       TaskfMRILevel3.sh \
+       ./TaskfMRILevel3.sh \
 	--path=$StudyFolder \
 	--subjectlist=$SubjectList \
 	--resultsfolder=$ResultsFolder \
