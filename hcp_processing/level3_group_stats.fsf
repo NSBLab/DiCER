@@ -36,7 +36,7 @@ set fmri(sscleanup_yn) 0
 set fmri(tr) 3
 
 # Total volumes
-set fmri(npts) 449
+set fmri(npts) 25
 
 # Delete volumes
 set fmri(ndelete) 0
