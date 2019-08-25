@@ -45,7 +45,7 @@ set fmri(ndelete) 0
 set fmri(tagfirst) 1
 
 # Number of first-level analyses
-set fmri(multiple) 449
+set fmri(multiple) 25
 
 # Higher-level input type
 # 1 : Inputs are lower-level FEAT directories
