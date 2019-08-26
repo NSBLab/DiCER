@@ -141,9 +141,10 @@ StartTime=`date`
 echo $StartTime
 
 LevelTwoFEATDirSTRING=""
-for Subject in $SubjectList ; do 
-  AtlasFolder="${StudyFolder}/${Subject}/MNINonLinear"
-  ResultsFolder="${AtlasFolder}/Results"
+for Subject in $SubjectList ; do   
+  # AtlasFolder="${StudyFolder}/${Subject}/MNINonLinear"
+  # ResultsFolder="${AtlasFolder}/Results"
+  ResultsFolder=/scratch/kg98/HCP_grayordinates_processed/${Subject}/${StudyFolder}
   LevelTwoFEATDir="${ResultsFolder}/${LevelTwofMRIName}/${LevelTwofsfName}${TemporalFilterString}${SmoothingString}_level2${RegString}.feat"
   if [ -d ${LevelTwoFEATDir} ] ; then
     LevelTwoFEATDirSTRING="${LevelTwoFEATDirSTRING} ${LevelTwoFEATDir}"
