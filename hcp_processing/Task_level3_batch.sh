@@ -36,11 +36,12 @@ AnalysisType="GRAYORD" #GRAYORD, VOLUME, or BOTH
 ## GRAYORD (grayordinate) is faster, less biased, and more sensitive.
 ## (Grayordinates results do not use unconstrained volumetric blurring).
 
-AnalysisName="Group_50_emotion_DiCER"   #Used as initial prefix in some file naming
+AnalysisName="Group_25_emotion_DiCER"   #Used as initial prefix in some file naming
 ResultsFolder="/scratch/kg98/HCP_grayordinates_processed/${AnalysisName}" #Here, ResultsFolder named using AnalysisName, 
                                                      #although that doesn't have to be the case
-LevelTwoTaskList="tfMRI_EMOTION" ##List of the tasks to analyze
-ContrastList="1" #USE "ALL" for analysing all the Lev2 contrasts
+
+LevelTwoTaskList="tfMRI_EMOTION tfMRI_GAMBLING tfMRI_LANGUAGE tfMRI_MOTOR tfMRI_RELATIONAL tfMRI_SOCIAL tfMRI_WM" ##List of the tasks to analyze
+ContrastList="ALL" #USE "ALL" for analysing all the Lev2 contrasts
 # N.B. Currently, ContrastList applies to all tasks in the LevelTwoTaskList
 # i.e., no mechanism for different ContrastLists for different tasks.
 # (However, could potentially implement that into the looping code below
