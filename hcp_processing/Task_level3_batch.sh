@@ -36,7 +36,7 @@ AnalysisType="GRAYORD" #GRAYORD, VOLUME, or BOTH
 ## GRAYORD (grayordinate) is faster, less biased, and more sensitive.
 ## (Grayordinates results do not use unconstrained volumetric blurring).
 
-AnalysisName="Group_50_emotion_standard"   #Used as initial prefix in some file naming
+AnalysisName="Group_50_emotion_DiCER"   #Used as initial prefix in some file naming
 ResultsFolder="/scratch/kg98/HCP_grayordinates_processed/${AnalysisName}" #Here, ResultsFolder named using AnalysisName, 
                                                      #although that doesn't have to be the case
 LevelTwoTaskList="tfMRI_EMOTION" ##List of the tasks to analyze
@@ -49,7 +49,7 @@ ContrastList="1" #USE "ALL" for analysing all the Lev2 contrasts
 
 ########## REVIEW THE FOLLOWING VARIABLES (YOU LIKELY DON'T NEED TO CHANGE THESE) ###############
 # StudyFolder="/scratch/kg98/HCP_grayordinates_processed_temporary/"
-StudyFolder="standard_taskResults"
+StudyFolder="DiCER_taskResults"
 SmoothingList="2" #For setting different final smoothings.  2 is no additional smoothing.
 TemporalFilter="200" #Use 2000 for linear detrend
 RegNames="MSMAll" #Set to MSM all which is the state of the art at the moment
