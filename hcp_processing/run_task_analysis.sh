@@ -4,18 +4,17 @@
 #SBATCH --account=kg98
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=600:00
+#SBATCH --time=1200:00
 #SBATCH --mail-user=kevin.aquino@monash.edu
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=END
 #SBATCH --export=ALL
 #SBATCH --mem-per-cpu=32000
 #SBATCH -A kg98
-#SBATCH --array=1
+#SBATCH --array=101-200
 
 
 SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
-SLURM_ARRAY_TASK_ID=1
 
 export subject=$(sed -n "${SLURM_ARRAY_TASK_ID}p" ${SUBJECT_LIST})
 echo -e "\t\t\t --------------------------- "
@@ -39,7 +38,7 @@ task[6]='WM'
 # FUNCTION DECLARATIONS (CALLED AFTER)
 copying_task_results () {
 	# In here copy the task results to somewhere else provided by the argument
-	for i in `seq 0 0`;
+	for i in `seq 0 6`;
 		do			
 			cp -r $subject"/MNINonLinear/Results/tfMRI_"${task[i]}"/tfMRI_"${task[i]}"_hp200_s2_level2_MSMAll.feat" $working_hcp_dir"/"$subject"/"$1
 		done
@@ -58,7 +57,7 @@ regress_out_noise () {
 	python split_up_regressor.py -reg $totalRegressor -folderBase $working_hcp_dir/$subject/$preproType"_"
 
 	# In here when you choose what you want to regress, also make copies of original signal
-	for i in `seq 0 0`;
+	for i in `seq 0 6`;
 	do	
 		resultsFolderBase=$StudyFolder"/"$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
 		PE[0]='LR'
@@ -102,7 +101,7 @@ change_task_input () {
 	# Change the inputs to the task analysis! this is done to make it automated and transparent
 	preproType=$1
 
-	for i in `seq 0 0`;
+	for i in `seq 0 6`;
 	do	
 		resultsFolderBase=$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
 		PE[0]='LR'
@@ -121,7 +120,7 @@ change_task_input () {
 
 # STEP 1: Performing the regession for DiCER and GMR
 regress_out_noise "DiCER"
-# sh regress_out_noise GMR
+regress_out_noise "GMR"
 
 # STEP 2: Run the task GLMs for the standard protocol:
 sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
@@ -137,7 +136,7 @@ copying_task_results "DiCER"
 change_task_input "standard"
 
 # STEP 4: do the same for GMR
-# change_task_input "GMR"
-# sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
-# copying_task_results "GMR"
-# change_task_input "standard"
+change_task_input "GMR"
+sh /home/kaqu0001/HCPpipelines/Examples/Scripts/TaskfMRIAnalysisBatch.sh --runlocal
+copying_task_results "GMR"
+change_task_input "standard"
