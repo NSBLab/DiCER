@@ -11,6 +11,8 @@ parser.add_argument("-sl", dest="subject_list",
 	help="A list of subjects that have been processed with tapestry.py", metavar="subject_list.txt")
 parser.add_argument("-d", dest="folder",
 	help="folder for to save the carpet plot", metavar="saving_dir")
+parser.add_argument("-suffix", dest="suffix", default="",
+        help="If the subject has a suffix to it. (eg rest)", metavar="rest")
 
 #--------------------    Parsing the inputs from terminal:   -------------------
 args = parser.parse_args()
@@ -18,6 +20,7 @@ func_labels 	= [str(item) for item in args.func_labels.split(',')]
 ordering_labels = [str(item) for item in args.ordering_labels.split(',')]
 subject_list	= args.subject_list
 folder 			= args.folder
+suffix			= args.suffix
 #-------------------------------------------------------------------------------
 
 # Define empty list:
@@ -49,7 +52,8 @@ for order_label in ordering_labels:
 	fileH.write('{\n')
 	for func_label in func_labels:
 		for subject in subjects:
-			fileH.write('document.getElementById("'+func_label+subject+'").src="'+subject+func_label+'_'+order_label+'carpet.png";\n')
+			subject=subject+suffix
+			fileH.write('document.getElementById("'+func_label+subject+'").src="'+subject+func_label+'_'+order_label+'tissue_carpet.png";\n')
 
 	fileH.write('}')
 
@@ -74,9 +78,10 @@ fileH.write('<center><table><tr>\n')
 # Here now add a table row for each variant of the functional MRI plots
 for subject in subjects:
 	fileH.write('<tr>\n')
+	subject=subject+suffix
 	fileH.write('<td>'+subject+'</td>\n')
 	for func_label in func_labels:
-		fileH.write('<td><a href='+subject+'carpet.html><img id='+func_label+subject+' src='+subject+func_label+'_'+ordering_labels[0]+'carpet.png width=400px></a></td>\n')
+		fileH.write('<td><a href='+subject+'carpet.html><img id='+func_label+subject+' src='+subject+func_label+'_'+ordering_labels[0]+'tissue_carpet.png width=400px></a></td>\n')
 	fileH.write('</tr>\n')
 
 fileH.write('<p></p><br><br>\n')

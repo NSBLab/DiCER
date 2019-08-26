@@ -51,6 +51,7 @@ for i in `seq 0 6`;
                 cat $working_hcp_dir/$subject/$subject"_Movements_regressors_task.txt" $temp_hcp_directory/$subject"/MNINonLinear/Results/tfMRI_"${task[i]}"_LR/Movement_Regressors.txt" > $temp_hcp_directory/$subject/$subject"_Movements_tmp.txt"
                 cat $temp_hcp_directory/$subject/$subject"_Movements_tmp.txt" $temp_hcp_directory/$subject"/MNINonLinear/Results/tfMRI_"${task[i]}"_RL/Movement_Regressors.txt" > $working_hcp_dir/$subject/$subject"_Movements_regressors_task.txt"
 		# remove on the fly
+		rm -rf $temp_hcp_directory"/"$file
 	done
 
 cd $temp_hcp_directory/$subject
@@ -63,8 +64,6 @@ cp $temp_hcp_directory/$subject/$subject"_all_tasks_Atlas_MSMAll.dtseries.nii" $
 
 echo "Copied the all_tasks CIFTI!"
 echo "deleting all task zip files for $subject ... "
-# Have to delete to avoid space issues
-rm -rf $subject*.zip
 
 # Now for resting state fMRI files, need to have the same set up
 
@@ -102,9 +101,11 @@ for i in `seq 1 2`;
                 # concatenate the movement files:
                 cat $working_hcp_dir/$subject/$subject"_Movements_regressors_rest.txt" $temp_hcp_directory/$subject"/MNINonLinear/Results/rfMRI_REST"$i"_LR/Movement_Regressors.txt" > $temp_hcp_directory/$subject/$subject"_Movements_rest_tmp.txt"
                 cat $temp_hcp_directory/$subject/$subject"_Movements_rest_tmp.txt" $temp_hcp_directory/$subject"/MNINonLinear/Results/rfMRI_REST"$i"_RL/Movement_Regressors.txt" > $working_hcp_dir/$subject/$subject"_Movements_regressors_rest.txt"
+		# remove the zip file
+		rm -rf $temp_hcp_directory"/"$subject"_3T_rfMRI_REST"$i"_preproc.zip"
 	done
 # remove on the fly
-
+rm -rf $temp_hcp_directory"/"$file
 cd $temp_hcp_directory/$subject
 echo "Combining all rest CIFTIs into a single CIFTI"
 wb_command -cifti-merge $subject"_all_rest_Atlas_MSMAll.dtseries.nii" $wb_call
@@ -112,7 +113,6 @@ wb_command -cifti-merge $subject"_all_rest_Atlas_MSMAll.dtseries.nii" $wb_call
 
 # Now copy the dtseries that you hae processed into the directory you are working in
 cp $temp_hcp_directory/$subject/$subject"_all_rest_Atlas_MSMAll.dtseries.nii" $working_hcp_dir"/"$subject"/"
-rm -rf $subject*.zip
 
 # remove a bulk of the restfmri stuff because its not used elsewhere
 cd $temp_hcp_directory/$subject/MNINonLinear/Results/

@@ -12,7 +12,7 @@
 #SBATCH --mem-per-cpu=16000
 #SBATCH -A kg98
 #SBATCH --qos=shortq
-#SBATCH --array=1
+#SBATCH --array=1-282
 
 
 SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
@@ -59,6 +59,7 @@ parcel_time_series () {
 	output_tsv=$working_hcp_dir"/parcel_cortical_subcortical/"$preproType"/"$subject"_rest_"$preproType".tsv"
 	matlab -nodisplay -r "addpath(genpath('${hcpmatlabtools}'));addpath(genpath('${giftitoolbox}'));create_parcel_series('${temp_gifti}','${output_tsv}'); exit"
 	rm -rf $temp_gifti
+	rm -rf $working_hcp_dir"/"$subject"/"$subject"_all_rest_Atlas_MSMAll"$preproType".func.gii.data"
 }
 
 # Run the parcel time series for each pipeline!

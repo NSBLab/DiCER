@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-#SBATCH --job-name=DiCER
+#SBATCH --job-name=HCP_tasks
 #SBATCH --account=kg98
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -23,6 +23,7 @@ echo -e "\t\t\t --------------------------- \n"
 
 #Load connectome module
 module load connectome
+module load anaconda/5.0.1-Python2.7-gcc5
 export Subjlist=$subject
 export StudyFolder=/scratch/kg98/HCP_grayordinates_processed_temporary/
 working_hcp_dir=/scratch/kg98/HCP_grayordinates_processed/
@@ -39,8 +40,11 @@ task[6]='WM'
 copying_task_results () {
 	# In here copy the task results to somewhere else provided by the argument
 	for i in `seq 0 6`;
-		do			
-			cp -r $subject"/MNINonLinear/Results/tfMRI_"${task[i]}"/tfMRI_"${task[i]}"_hp200_s2_level2_MSMAll.feat" $working_hcp_dir"/"$subject"/"$1
+		do	
+			if [ ! -d $working_hcp_dir"/"$subject"/"$1"_taskResults" ]; then
+          			mkdir -p $working_hcp_dir"/"$subject"/"$1"_taskResults"
+			fi	
+			cp -r $StudyFolder"/"$subject"/MNINonLinear/Results/tfMRI_"${task[i]}"/tfMRI_"${task[i]}"_hp200_s2_level2_MSMAll.feat" $working_hcp_dir"/"$subject"/"$1"_taskResults/"
 		done
 }
 
@@ -53,7 +57,7 @@ regress_out_noise () {
 		DiCER) totalRegressor=$working_hcp_dir/$subject/$subject"_task_dbscan_liberal_regressors.tsv" ;;			
 	esac
 
-
+	echo python split_up_regressor.py -reg $totalRegressor -folderBase $working_hcp_dir/$subject/$preproType"_"
 	python split_up_regressor.py -reg $totalRegressor -folderBase $working_hcp_dir/$subject/$preproType"_"
 
 	# In here when you choose what you want to regress, also make copies of original signal
@@ -103,7 +107,7 @@ change_task_input () {
 
 	for i in `seq 0 6`;
 	do	
-		resultsFolderBase=$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
+		resultsFolderBase=$StudyFolder"/"$subject"/MNINonLinear/Results/tfMRI_"${task[i]}
 		PE[0]='LR'
 		PE[1]='RL'
 		for pd in `seq 0 1`;

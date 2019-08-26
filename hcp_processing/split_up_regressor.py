@@ -40,13 +40,12 @@ def split_up_regressor(reg,folder):
     # import pdb;pdb.set_trace()
     shape_vec=regressor_all.shape
     for ind in range(0,14):
-    	regressor_inds=np.where(task_stopPoints[:,ind]==1)
-     	if(len(shape_vec)==1):
-     		regressor=regressor_all[regressor_inds[0]]
-     	else:
-     		regressor=regressor_all[regressor_inds[0],:]
-    	np.savetxt(folder+task_nm[ind]+'.tsv',regressor)
-
+        regressor_inds=np.where(task_stopPoints[:,ind]==1)
+	if(len(shape_vec)==1):
+		regressor=regressor_all[regressor_inds[0]]
+	else:
+        	regressor=regressor_all[regressor_inds[0],:]
+        np.savetxt(folder+task_nm[ind]+'.tsv',regressor)
 
 def main(raw_args=None):
 

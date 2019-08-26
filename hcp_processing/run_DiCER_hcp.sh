@@ -11,11 +11,12 @@
 #SBATCH --export=ALL
 #SBATCH --mem-per-cpu=32000
 #SBATCH -A kg98
-#SBATCH --array=1-282
+#SBATCH --array=1-447
 # SBATCH --array=101
 
 
-SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
+#SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
+SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/WHITE1andWHITE2_remaining.txt"
 
 export subject=$(sed -n "${SLURM_ARRAY_TASK_ID}p" ${SUBJECT_LIST})
 echo -e "\t\t\t --------------------------- "
@@ -66,3 +67,8 @@ sh DiCER_lightweight.sh -f -i $subject"_task_dm.nii.gz"  -w $working_hcp_dir/$su
 echo -e "\t\t\t --------------------------- "
 echo -e "\t\t\t ----- ${SLURM_ARRAY_TASK_ID} ${subject} DiCER Finished - enjoy!----- "
 echo -e "\t\t\t --------------------------- \n"
+
+echo "REMOVING THE FOLDER FROM TEMP, first copy T1w into the directory as well."
+cp $temp_hcp_directory/$subject/MNINonLinear/T1w.nii.gz  $working_hcp_dir/$subject/
+rm -rf $temp_hcp_directory/$subject
+

@@ -29,7 +29,7 @@ if paramSet=='veryLiberal':
     eps = 0.70 #sys.argv[2]
     propSamplesDense = 0.05 # sys.argv[3] #0.005
 elif paramSet=='liberal':
-    eps = 0.60
+    eps = 0.80
     propSamplesDense = 0.01
 
 # Force stop after a certain number of iterations
