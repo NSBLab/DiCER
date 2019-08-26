@@ -1,5 +1,6 @@
 #!/bin/bash 
 
+
 # Requirements for this script
 #  installed versions of: FSL (version 5.0.6 or later)
 #  environment: FSLDIR , HCPPIPEDIR , CARET7DIR
@@ -36,7 +37,7 @@ AnalysisType="GRAYORD" #GRAYORD, VOLUME, or BOTH
 ## GRAYORD (grayordinate) is faster, less biased, and more sensitive.
 ## (Grayordinates results do not use unconstrained volumetric blurring).
 
-AnalysisName="Group_25_emotion_DiCER"   #Used as initial prefix in some file naming
+AnalysisName="Group_25_DiCER"   #Used as initial prefix in some file naming
 ResultsFolder="/scratch/kg98/HCP_grayordinates_processed/${AnalysisName}" #Here, ResultsFolder named using AnalysisName, 
                                                      #although that doesn't have to be the case
 
