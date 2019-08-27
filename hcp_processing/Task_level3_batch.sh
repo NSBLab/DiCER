@@ -1,5 +1,18 @@
 #!/bin/bash 
 
+#SBATCH --job-name=level3_HCP
+#SBATCH --account=kg98
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --time=120:00
+#SBATCH --mail-user=kevin.aquino@monash.edu
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-type=END
+#SBATCH --export=ALL
+#SBATCH --mem-per-cpu=12000
+#SBATCH -A kg98
+
+module load connectome
 
 # Requirements for this script
 #  installed versions of: FSL (version 5.0.6 or later)
@@ -37,7 +50,7 @@ AnalysisType="GRAYORD" #GRAYORD, VOLUME, or BOTH
 ## GRAYORD (grayordinate) is faster, less biased, and more sensitive.
 ## (Grayordinates results do not use unconstrained volumetric blurring).
 
-AnalysisName="Group_25_DiCER"   #Used as initial prefix in some file naming
+#AnalysisName="Group_25_DiCER"   #Used as initial prefix in some file naming
 ResultsFolder="/scratch/kg98/HCP_grayordinates_processed/${AnalysisName}" #Here, ResultsFolder named using AnalysisName, 
                                                      #although that doesn't have to be the case
 
@@ -51,7 +64,7 @@ ContrastList="ALL" #USE "ALL" for analysing all the Lev2 contrasts
 
 ########## REVIEW THE FOLLOWING VARIABLES (YOU LIKELY DON'T NEED TO CHANGE THESE) ###############
 # StudyFolder="/scratch/kg98/HCP_grayordinates_processed_temporary/"
-StudyFolder="DiCER_taskResults"
+#StudyFolder="DiCER_taskResults"
 SmoothingList="2" #For setting different final smoothings.  2 is no additional smoothing.
 TemporalFilter="200" #Use 2000 for linear detrend
 RegNames="MSMAll" #Set to MSM all which is the state of the art at the moment
