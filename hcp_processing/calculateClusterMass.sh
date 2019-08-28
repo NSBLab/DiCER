@@ -8,7 +8,10 @@ textFile=$3
 # echo $0
 # echo $2
 # echo $3
-
+zMap_tmp=$tmp_dir/tmp_z.dscalar.nii
+wb_command -cifti-math 'abs(x)' $zMap_tmp -var x $zMap
+# Now adjust this
+zMap=$zMap_tmp
 wb_command -cifti-find-clusters $zMap 5 5 5 5 COLUMN $2/cluster.dscalar.nii -left-surface ~/projects/matlabHCPtools/HCP_data_Glasser_2016/Q1-Q6_RelatedParcellation210.L.midthickness_MSMAll_2_d41_WRN_DeDrift.32k_fs_LR.surf.gii -right-surface ~/projects/matlabHCPtools/HCP_data_Glasser_2016/Q1-Q6_RelatedParcellation210.R.midthickness_MSMAll_2_d41_WRN_DeDrift.32k_fs_LR.surf.gii 
 clusterMap=$2/cluster.dscalar.nii
 vertexAreas=~/projects/matlabHCPtools/surfaceArea.dscalar.nii
