@@ -34,7 +34,7 @@ EnvironmentScript="/home/kaqu0001/HCPpipelines/Examples/Scripts/SetUpHCPPipeline
 ##(1) Paste your space-delimited subject list here
 ## The SubjectList can be space delimited or using "@" instead of spaces. 
 
-SubjectList="183034 185442 186141 186444 187345 188448 188549 188751 189450 191033 192035 195849 198249 198855 199453 199958 200008 200311 201515 203923 204319 204521 204622 206222 207123"
+SubjectList="183034 185442 186141 186444 187345 188448 188549 188751 189450 192035 195849 198249 198855 199453 199958 200008 200311 201515 203923 204319 204521 204622 206222 207123 214524"
 
 ##(2) Read your text file into a space-delimited list 
 ## First you must make your subject list into a single-column text file without headers.
