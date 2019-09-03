@@ -45,8 +45,8 @@ if [ ! -d $working_hcp_dir"/"$subject"/STANDARD_taskResults" ]; then
 			mkdir -p $working_hcp_dir"/"$subject"/STANDARD_taskResults"
 fi	
 STANDARD_FOLDER=$working_hcp_dir"/"$subject"/STANDARD_taskResults"
-cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_LR_hp200_s2_level1_MSMAll.feat" $STANDARD_FOLDER/
-cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_RL_hp200_s2_level1_MSMAll.feat" $STANDARD_FOLDER/
+cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_LR/tfMRI_"$TASK"_LR_hp200_s2_level1_MSMAll.feat" $STANDARD_FOLDER/
+cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_RL/tfMRI_"$TASK"_RL_hp200_s2_level1_MSMAll.feat" $STANDARD_FOLDER/
 cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"/tfMRI_"$TASK"_hp200_s2_level2_MSMAll.feat" $STANDARD_FOLDER/
 
 
@@ -76,8 +76,8 @@ if [ ! -d $working_hcp_dir"/"$subject"/DICER_taskResults" ]; then
 			mkdir -p $working_hcp_dir"/"$subject"/DICER_taskResults"
 fi	
 DICER_FOLDER=$working_hcp_dir"/"$subject"/DICER_taskResults"
-cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_LR_hp200_s2_level1_MSMAll.feat" $DICER_FOLDER/
-cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_RL_hp200_s2_level1_MSMAll.feat" $DICER_FOLDER/
+cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_LR/tfMRI_"$TASK"_LR_hp200_s2_level1_MSMAll.feat" $DICER_FOLDER/
+cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"_RL/tfMRI_"$TASK"_RL_hp200_s2_level1_MSMAll.feat" $DICER_FOLDER/
 cp -r $temp_hcp_directory"/"$subject"/MNINonLinear/Results/tfMRI_"$TASK"/tfMRI_"$TASK"_hp200_s2_level2_MSMAll.feat" $DICER_FOLDER/
 
 
