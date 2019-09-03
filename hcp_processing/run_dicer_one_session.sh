@@ -68,7 +68,7 @@ for pd in `seq 0 1`;
 	done
 
 # Run Task analysis for the DiCER
-sh TaskfMRIAnalysisBatch.sh 
+sh TaskfMRIAnalysisBatch.sh --runlocal
 # Then copy the files somewhere
 
 # %copy the PE RL and LR into a folder
