@@ -4,17 +4,18 @@
 #SBATCH --account=kg98
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --time=1200:00
+#SBATCH --time=2400:00
 #SBATCH --mail-user=kevin.aquino@monash.edu
 #SBATCH --mail-type=FAIL
 #SBATCH --mail-type=END
 #SBATCH --export=ALL
 #SBATCH --mem-per-cpu=32000
 #SBATCH -A kg98
-#SBATCH --array=101-200
+#SBATCH --array=1-91
 
 
-SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
+#SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
+SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon_100_dicer.txt"
 
 export subject=$(sed -n "${SLURM_ARRAY_TASK_ID}p" ${SUBJECT_LIST})
 echo -e "\t\t\t --------------------------- "

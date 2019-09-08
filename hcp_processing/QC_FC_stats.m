@@ -28,6 +28,7 @@ switch WhichProject
         % second, filter subject that have been fully dbscanned
         fltFile = 's900_unrelated_physio_same_fmrrecon.txt';
         TR = 0.72;
+        tsv_base_dir='/scratch/kg98/HCP_grayordinates_processed/parcel_cortical_subcortical/';
 end
 
 % ------------------------------------------------------------------------------
@@ -88,6 +89,21 @@ metadata(idx,:) = [];
 numSubs = size(metadata,1);
 
 % ------------------------------------------------------------------------------
+
+% First check -- are there any subjects without DiCER?
+tsv_location='/scratch/kg98/HCP_grayordinates_processed/parcel_cortical_subcortical/dm_dbscan';
+for i=1:height(metadata),
+    subject=metadata.ParticipantID{i};
+    DiCER_tsv=[tsv_location,'/',subject,'_rest_dm_dbscan.tsv'];
+    if(~isfile(DiCER_tsv))
+        metadata.exclude(i) = 0;
+    end
+end
+fprintf(1, 'Excluded %u subjects that had no DiCER \n', sum(metadata.exclude));
+metadata = metadata(~metadata.exclude,:); numSubs = size(metadata,1);
+
+
+
 % Exclusion
 % ------------------------------------------------------------------------------
 % Threshold for detecting 'spikes'
@@ -101,16 +117,19 @@ metadata.fdJenk_m = zeros(numSubs,1);
 
 metadata.exclude = zeros(numSubs,1);
 for i = 1:numSubs
-    subject=ParticipantID{i};
+    subject=metadata.ParticipantID{i};
     % To actually reaad the mov file
-    mov = dlmread([working_dir,subject,'/',subject,'_Movements_regressors_rest.txt']);
+%     mov = dlmread([working_dir,subject,'/',subject,'_Movements_regressors_rest.txt']);
     % Restrict just to first session for now.
-    mov mov(1:1200,:);
+%     mov = mov(1:1200,:);
     % mov = [conf.X, conf.Y, conf.Z, conf.RotX, conf.RotY, conf.RotZ];
-    numVols = size(mov,1);
+%     numVols = size(mov,1);
 
+    FD = dlmread([working_dir,subject,'/',subject,'_Movements_rest.txt']);
+    FD=FD(1:1200);
+    numVols = size(FD,1);
     % Get FD
-    metadata.fdJenk{i} = GetFDJenk_edit(mov);
+    metadata.fdJenk{i} = FD;
     % Calculate mean
     metadata.fdJenk_m(i) = mean(metadata.fdJenk{i});
     
@@ -135,7 +154,7 @@ for i = 1:numSubs
     if x == 1 | y == 1 | z == 1; metadata.exclude(i) = 1; else metadata.exclude(i) = 0; end
 end
 
-fprintf(1, 'Excluded %u subjects \n', sum(metadata.exclude));
+fprintf(1, 'Excluded a further %u subjects \n', sum(metadata.exclude));
 metadata = metadata(~metadata.exclude,:); numSubs = size(metadata,1);
 
 
@@ -147,19 +166,26 @@ metadata = metadata(~metadata.exclude,:); numSubs = size(metadata,1);
 % noiseOptions = {'AROMA+2P+DBSCAN','AROMA+2P','AROMA+2P+GSR','AROMA+2P+GMR'}; % note these MUST match those store in columns of cfg.roiTS
 % noiseOptions = {'hpf_dbscan','hpf','hpf_gsr','hpf_aGMR'}; % note these MUST match those store in columns of cfg.roiTS
 
+
+
 noiseOptions = {'ICA-FIX','ICA-FIX+DiCER','ICA-FIX+GMR'};
+tsvnames = {'dm','dm_dbscan','dm_GMR'};
+
 
 numPrePro = length(noiseOptions);
 
 FC = zeros(numROIs,numROIs,numSubs,numPrePro);
 
 for i = 1:numSubs
+    subject=metadata.ParticipantID{i};
     % Load in time series data
-    dbscandir = [datadir,'derivatives/fmriprep/',metadata.ParticipantID{i},'/dbscan/'];
+%     dbscandir = [datadir,'derivatives/fmriprep/',metadata.ParticipantID{i},'/dbscan/'];
 
     % Compute correlations
     for j = 1:numPrePro
-        TS = dlmread([dbscandir,parcFile,'_',noiseOptions{j},'.txt']);
+        TS = dlmread([tsv_base_dir,'/',tsvnames{j},'/',subject,'_rest_',tsvnames{j},'.tsv']);
+%         TS = dlmread([dbscandir,parcFile,'_',noiseOptions{j},'.txt']);
+        TS = TS(1:360,1:1200);
         FC(:,:,i,j) = corr(TS);        
         [coef,score,~,~,explained] = pca(zscore(TS).');
         first_pc(i,j) = explained(1);

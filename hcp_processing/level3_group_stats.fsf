@@ -36,7 +36,7 @@ set fmri(sscleanup_yn) 0
 set fmri(tr) 3
 
 # Total volumes
-set fmri(npts) 25
+set fmri(npts) 18
 
 # Delete volumes
 set fmri(ndelete) 0
@@ -45,7 +45,7 @@ set fmri(ndelete) 0
 set fmri(tagfirst) 1
 
 # Number of first-level analyses
-set fmri(multiple) 25
+set fmri(multiple) 18
 
 # Higher-level input type
 # 1 : Inputs are lower-level FEAT directories
@@ -370,26 +370,6 @@ set fmri(evg17.1) 1
 # Higher-level EV value for EV 1 and input 18
 set fmri(evg18.1) 1
 
-# Higher-level EV value for EV 1 and input 19
-set fmri(evg19.1) 1
-
-# Higher-level EV value for EV 1 and input 20
-set fmri(evg20.1) 1
-
-# Higher-level EV value for EV 1 and input 21
-set fmri(evg21.1) 1
-
-# Higher-level EV value for EV 1 and input 22
-set fmri(evg22.1) 1
-
-# Higher-level EV value for EV 1 and input 23
-set fmri(evg23.1) 1
-
-# Higher-level EV value for EV 1 and input 24
-set fmri(evg24.1) 1
-
-# Higher-level EV value for EV 1 and input 25
-set fmri(evg25.1) 1
 
 # Group membership for input 1
 set fmri(groupmem.1) 1
@@ -445,28 +425,6 @@ set fmri(groupmem.17) 1
 # Group membership for input 18
 set fmri(groupmem.18) 1
 
-# Group membership for input 19
-set fmri(groupmem.19) 1
-
-# Group membership for input 20
-set fmri(groupmem.20) 1
-
-# Group membership for input 21
-set fmri(groupmem.21) 1
-
-# Group membership for input 22
-set fmri(groupmem.22) 1
-
-# Group membership for input 23
-set fmri(groupmem.23) 1
-
-# Group membership for input 24
-set fmri(groupmem.24) 1
-
-# Group membership for input 25
-set fmri(groupmem.25) 1
-
-# Contrast & F-tests mode
 # real : control real EVs
 # orig : control original EVs
 set fmri(con_mode_old) real

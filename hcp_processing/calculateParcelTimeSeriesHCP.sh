@@ -12,10 +12,11 @@
 #SBATCH --mem-per-cpu=16000
 #SBATCH -A kg98
 #SBATCH --qos=shortq
-#SBATCH --array=1-282
+#SBATCH --array=1-447
 
 
-SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
+#SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/s900_unrelated_physio_same_fmrrecon.txt"
+SUBJECT_LIST="/home/kaqu0001/projects/DiCER/hcp_processing/WHITE1andWHITE2_remaining.txt"
 
 export subject=$(sed -n "${SLURM_ARRAY_TASK_ID}p" ${SUBJECT_LIST})
 echo -e "\t\t\t --------------------------- "

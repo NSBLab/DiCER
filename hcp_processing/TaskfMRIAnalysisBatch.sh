@@ -76,11 +76,11 @@ PRINTCOM=""
 
 ######################################### DO WORK ##########################################
 
-TaskNameList=""
+#TaskNameList=""
 #TaskNameList="${TaskNameList} EMOTION"
 #TaskNameList="${TaskNameList} GAMBLING"
 #TaskNameList="${TaskNameList} LANGUAGE"
-TaskNameList="${TaskNameList} MOTOR"
+#TaskNameList="${TaskNameList} MOTOR"
 #TaskNameList="${TaskNameList} RELATIONAL"
 #TaskNameList="${TaskNameList} SOCIAL"
 #TaskNameList="${TaskNameList} WM"
