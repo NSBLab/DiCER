@@ -316,285 +316,305 @@ set fmri(ortho1.0) 0
 # Orthogonalise EV 1 wrt EV 1
 set fmri(ortho1.1) 0
 
-# Higher-level EV value for EV 1 and input 1
+# Higher-level EV value for EV 1 and input 1 
 set fmri(evg1.1) 1
 
-# Higher-level EV value for EV 1 and input 2
-set fmri(evg2.1) 1
+# Higher-level EV value for EV 1 and input 2 
+set fmri(evg1.2) 1
 
-# Higher-level EV value for EV 1 and input 3
-set fmri(evg3.1) 1
+# Higher-level EV value for EV 1 and input 3 
+set fmri(evg1.3) 1
 
-# Higher-level EV value for EV 1 and input 4
-set fmri(evg4.1) 1
+# Higher-level EV value for EV 1 and input 4 
+set fmri(evg1.4) 1
 
-# Higher-level EV value for EV 1 and input 5
-set fmri(evg5.1) 1
+# Higher-level EV value for EV 1 and input 5 
+set fmri(evg1.5) 1
 
-# Higher-level EV value for EV 1 and input 6
-set fmri(evg6.1) 1
+# Higher-level EV value for EV 1 and input 6 
+set fmri(evg1.6) 1
 
-# Higher-level EV value for EV 1 and input 7
-set fmri(evg7.1) 1
+# Higher-level EV value for EV 1 and input 7 
+set fmri(evg1.7) 1
 
-# Higher-level EV value for EV 1 and input 8
-set fmri(evg8.1) 1
+# Higher-level EV value for EV 1 and input 8 
+set fmri(evg1.8) 1
 
-# Higher-level EV value for EV 1 and input 9
-set fmri(evg9.1) 1
+# Higher-level EV value for EV 1 and input 9 
+set fmri(evg1.9) 1
 
-# Higher-level EV value for EV 1 and input 10
-set fmri(evg10.1) 1
+# Higher-level EV value for EV 1 and input 10 
+set fmri(evg1.10) 1
 
-# Higher-level EV value for EV 1 and input 11
-set fmri(evg11.1) 1
+# Higher-level EV value for EV 1 and input 11 
+set fmri(evg1.11) 1
 
-# Higher-level EV value for EV 1 and input 12
-set fmri(evg12.1) 1
+# Higher-level EV value for EV 1 and input 12 
+set fmri(evg1.12) 1
 
-# Higher-level EV value for EV 1 and input 13
-set fmri(evg13.1) 1
+# Higher-level EV value for EV 1 and input 13 
+set fmri(evg1.13) 1
 
-# Higher-level EV value for EV 1 and input 14
-set fmri(evg14.1) 1
+# Higher-level EV value for EV 1 and input 14 
+set fmri(evg1.14) 1
 
-# Higher-level EV value for EV 1 and input 15
-set fmri(evg15.1) 1
+# Higher-level EV value for EV 1 and input 15 
+set fmri(evg1.15) 1
 
-# Higher-level EV value for EV 1 and input 16
-set fmri(evg16.1) 1
+# Higher-level EV value for EV 1 and input 16 
+set fmri(evg1.16) 1
 
-# Higher-level EV value for EV 1 and input 17
-set fmri(evg17.1) 1
+# Higher-level EV value for EV 1 and input 17 
+set fmri(evg1.17) 1
 
-# Higher-level EV value for EV 1 and input 18
-set fmri(evg18.1) 1
+# Higher-level EV value for EV 1 and input 18 
+set fmri(evg1.18) 1
 
+# Higher-level EV value for EV 1 and input 19 
+set fmri(evg1.19) 1
 
-# Higher-level EV value for EV 1 and input 26
-set fmri(evg26.1) 1
+# Higher-level EV value for EV 1 and input 20 
+set fmri(evg1.20) 1
 
-# Higher-level EV value for EV 1 and input 27
-set fmri(evg27.1) 1
+# Higher-level EV value for EV 1 and input 21 
+set fmri(evg1.21) 1
 
-# Higher-level EV value for EV 1 and input 28
-set fmri(evg28.1) 1
+# Higher-level EV value for EV 1 and input 22 
+set fmri(evg1.22) 1
 
-# Higher-level EV value for EV 1 and input 29
-set fmri(evg29.1) 1
+# Higher-level EV value for EV 1 and input 23 
+set fmri(evg1.23) 1
 
-# Higher-level EV value for EV 1 and input 30
-set fmri(evg30.1) 1
+# Higher-level EV value for EV 1 and input 24 
+set fmri(evg1.24) 1
 
-# Higher-level EV value for EV 1 and input 31
-set fmri(evg31.1) 1
+# Higher-level EV value for EV 1 and input 25 
+set fmri(evg1.25) 1
 
-# Higher-level EV value for EV 1 and input 32
-set fmri(evg32.1) 1
+# Higher-level EV value for EV 1 and input 26 
+set fmri(evg1.26) 1
 
-# Higher-level EV value for EV 1 and input 33
-set fmri(evg33.1) 1
+# Higher-level EV value for EV 1 and input 27 
+set fmri(evg1.27) 1
 
-# Higher-level EV value for EV 1 and input 34
-set fmri(evg34.1) 1
+# Higher-level EV value for EV 1 and input 28 
+set fmri(evg1.28) 1
 
-# Higher-level EV value for EV 1 and input 35
-set fmri(evg35.1) 1
+# Higher-level EV value for EV 1 and input 29 
+set fmri(evg1.29) 1
 
-# Higher-level EV value for EV 1 and input 36
-set fmri(evg36.1) 1
+# Higher-level EV value for EV 1 and input 30 
+set fmri(evg1.30) 1
 
-# Higher-level EV value for EV 1 and input 37
-set fmri(evg37.1) 1
+# Higher-level EV value for EV 1 and input 31 
+set fmri(evg1.31) 1
 
-# Higher-level EV value for EV 1 and input 38
-set fmri(evg38.1) 1
+# Higher-level EV value for EV 1 and input 32 
+set fmri(evg1.32) 1
 
-# Higher-level EV value for EV 1 and input 39
-set fmri(evg39.1) 1
+# Higher-level EV value for EV 1 and input 33 
+set fmri(evg1.33) 1
 
-# Higher-level EV value for EV 1 and input 40
-set fmri(evg40.1) 1
+# Higher-level EV value for EV 1 and input 34 
+set fmri(evg1.34) 1
 
-# Higher-level EV value for EV 1 and input 41
-set fmri(evg41.1) 1
+# Higher-level EV value for EV 1 and input 35 
+set fmri(evg1.35) 1
 
-# Higher-level EV value for EV 1 and input 42
-set fmri(evg42.1) 1
+# Higher-level EV value for EV 1 and input 36 
+set fmri(evg1.36) 1
 
-# Higher-level EV value for EV 1 and input 43
-set fmri(evg43.1) 1
+# Higher-level EV value for EV 1 and input 37 
+set fmri(evg1.37) 1
 
-# Higher-level EV value for EV 1 and input 44
-set fmri(evg44.1) 1
+# Higher-level EV value for EV 1 and input 38 
+set fmri(evg1.38) 1
 
-# Higher-level EV value for EV 1 and input 45
-set fmri(evg45.1) 1
+# Higher-level EV value for EV 1 and input 39 
+set fmri(evg1.39) 1
 
-# Higher-level EV value for EV 1 and input 46
-set fmri(evg46.1) 1
+# Higher-level EV value for EV 1 and input 40 
+set fmri(evg1.40) 1
 
-# Higher-level EV value for EV 1 and input 47
-set fmri(evg47.1) 1
+# Higher-level EV value for EV 1 and input 41 
+set fmri(evg1.41) 1
 
-# Higher-level EV value for EV 1 and input 48
-set fmri(evg48.1) 1
+# Higher-level EV value for EV 1 and input 42 
+set fmri(evg1.42) 1
 
-# Higher-level EV value for EV 1 and input 49
-set fmri(evg49.1) 1
+# Higher-level EV value for EV 1 and input 43 
+set fmri(evg1.43) 1
 
-# Higher-level EV value for EV 1 and input 50
-set fmri(evg50.1) 1
+# Higher-level EV value for EV 1 and input 44 
+set fmri(evg1.44) 1
 
-# Higher-level EV value for EV 1 and input 51
-set fmri(evg51.1) 1
+# Higher-level EV value for EV 1 and input 45 
+set fmri(evg1.45) 1
 
-# Higher-level EV value for EV 1 and input 52
-set fmri(evg52.1) 1
+# Higher-level EV value for EV 1 and input 46 
+set fmri(evg1.46) 1
 
-# Higher-level EV value for EV 1 and input 53
-set fmri(evg53.1) 1
+# Higher-level EV value for EV 1 and input 47 
+set fmri(evg1.47) 1
 
-# Higher-level EV value for EV 1 and input 54
-set fmri(evg54.1) 1
+# Higher-level EV value for EV 1 and input 48 
+set fmri(evg1.48) 1
 
-# Higher-level EV value for EV 1 and input 55
-set fmri(evg55.1) 1
+# Higher-level EV value for EV 1 and input 49 
+set fmri(evg1.49) 1
 
-# Higher-level EV value for EV 1 and input 56
-set fmri(evg56.1) 1
+# Higher-level EV value for EV 1 and input 50 
+set fmri(evg1.50) 1
 
-# Higher-level EV value for EV 1 and input 57
-set fmri(evg57.1) 1
+# Higher-level EV value for EV 1 and input 51 
+set fmri(evg1.51) 1
 
-# Higher-level EV value for EV 1 and input 58
-set fmri(evg58.1) 1
+# Higher-level EV value for EV 1 and input 52 
+set fmri(evg1.52) 1
 
-# Higher-level EV value for EV 1 and input 59
-set fmri(evg59.1) 1
+# Higher-level EV value for EV 1 and input 53 
+set fmri(evg1.53) 1
 
-# Higher-level EV value for EV 1 and input 60
-set fmri(evg60.1) 1
+# Higher-level EV value for EV 1 and input 54 
+set fmri(evg1.54) 1
 
-# Higher-level EV value for EV 1 and input 61
-set fmri(evg61.1) 1
+# Higher-level EV value for EV 1 and input 55 
+set fmri(evg1.55) 1
 
-# Higher-level EV value for EV 1 and input 62
-set fmri(evg62.1) 1
+# Higher-level EV value for EV 1 and input 56 
+set fmri(evg1.56) 1
 
-# Higher-level EV value for EV 1 and input 63
-set fmri(evg63.1) 1
+# Higher-level EV value for EV 1 and input 57 
+set fmri(evg1.57) 1
 
-# Higher-level EV value for EV 1 and input 64
-set fmri(evg64.1) 1
+# Higher-level EV value for EV 1 and input 58 
+set fmri(evg1.58) 1
 
-# Higher-level EV value for EV 1 and input 65
-set fmri(evg65.1) 1
+# Higher-level EV value for EV 1 and input 59 
+set fmri(evg1.59) 1
 
-# Higher-level EV value for EV 1 and input 66
-set fmri(evg66.1) 1
+# Higher-level EV value for EV 1 and input 60 
+set fmri(evg1.60) 1
 
-# Higher-level EV value for EV 1 and input 67
-set fmri(evg67.1) 1
+# Higher-level EV value for EV 1 and input 61 
+set fmri(evg1.61) 1
 
-# Higher-level EV value for EV 1 and input 68
-set fmri(evg68.1) 1
+# Higher-level EV value for EV 1 and input 62 
+set fmri(evg1.62) 1
 
-# Higher-level EV value for EV 1 and input 69
-set fmri(evg69.1) 1
+# Higher-level EV value for EV 1 and input 63 
+set fmri(evg1.63) 1
 
-# Higher-level EV value for EV 1 and input 70
-set fmri(evg70.1) 1
+# Higher-level EV value for EV 1 and input 64 
+set fmri(evg1.64) 1
 
-# Higher-level EV value for EV 1 and input 71
-set fmri(evg71.1) 1
+# Higher-level EV value for EV 1 and input 65 
+set fmri(evg1.65) 1
 
-# Higher-level EV value for EV 1 and input 72
-set fmri(evg72.1) 1
+# Higher-level EV value for EV 1 and input 66 
+set fmri(evg1.66) 1
 
-# Higher-level EV value for EV 1 and input 73
-set fmri(evg73.1) 1
+# Higher-level EV value for EV 1 and input 67 
+set fmri(evg1.67) 1
 
-# Higher-level EV value for EV 1 and input 74
-set fmri(evg74.1) 1
+# Higher-level EV value for EV 1 and input 68 
+set fmri(evg1.68) 1
 
-# Higher-level EV value for EV 1 and input 75
-set fmri(evg75.1) 1
+# Higher-level EV value for EV 1 and input 69 
+set fmri(evg1.69) 1
 
-# Higher-level EV value for EV 1 and input 76
-set fmri(evg76.1) 1
+# Higher-level EV value for EV 1 and input 70 
+set fmri(evg1.70) 1
 
-# Higher-level EV value for EV 1 and input 77
-set fmri(evg77.1) 1
+# Higher-level EV value for EV 1 and input 71 
+set fmri(evg1.71) 1
 
-# Higher-level EV value for EV 1 and input 78
-set fmri(evg78.1) 1
+# Higher-level EV value for EV 1 and input 72 
+set fmri(evg1.72) 1
 
-# Higher-level EV value for EV 1 and input 79
-set fmri(evg79.1) 1
+# Higher-level EV value for EV 1 and input 73 
+set fmri(evg1.73) 1
 
-# Higher-level EV value for EV 1 and input 80
-set fmri(evg80.1) 1
+# Higher-level EV value for EV 1 and input 74 
+set fmri(evg1.74) 1
 
-# Higher-level EV value for EV 1 and input 81
-set fmri(evg81.1) 1
+# Higher-level EV value for EV 1 and input 75 
+set fmri(evg1.75) 1
 
-# Higher-level EV value for EV 1 and input 82
-set fmri(evg82.1) 1
+# Higher-level EV value for EV 1 and input 76 
+set fmri(evg1.76) 1
 
-# Higher-level EV value for EV 1 and input 83
-set fmri(evg83.1) 1
+# Higher-level EV value for EV 1 and input 77 
+set fmri(evg1.77) 1
 
-# Higher-level EV value for EV 1 and input 84
-set fmri(evg84.1) 1
+# Higher-level EV value for EV 1 and input 78 
+set fmri(evg1.78) 1
 
-# Higher-level EV value for EV 1 and input 85
-set fmri(evg85.1) 1
+# Higher-level EV value for EV 1 and input 79 
+set fmri(evg1.79) 1
 
-# Higher-level EV value for EV 1 and input 86
-set fmri(evg86.1) 1
+# Higher-level EV value for EV 1 and input 80 
+set fmri(evg1.80) 1
 
-# Higher-level EV value for EV 1 and input 87
-set fmri(evg87.1) 1
+# Higher-level EV value for EV 1 and input 81 
+set fmri(evg1.81) 1
 
-# Higher-level EV value for EV 1 and input 88
-set fmri(evg88.1) 1
+# Higher-level EV value for EV 1 and input 82 
+set fmri(evg1.82) 1
 
-# Higher-level EV value for EV 1 and input 89
-set fmri(evg89.1) 1
+# Higher-level EV value for EV 1 and input 83 
+set fmri(evg1.83) 1
 
-# Higher-level EV value for EV 1 and input 90
-set fmri(evg90.1) 1
+# Higher-level EV value for EV 1 and input 84 
+set fmri(evg1.84) 1
 
-# Higher-level EV value for EV 1 and input 91
-set fmri(evg91.1) 1
+# Higher-level EV value for EV 1 and input 85 
+set fmri(evg1.85) 1
 
-# Higher-level EV value for EV 1 and input 92
-set fmri(evg92.1) 1
+# Higher-level EV value for EV 1 and input 86 
+set fmri(evg1.86) 1
 
-# Higher-level EV value for EV 1 and input 93
-set fmri(evg93.1) 1
+# Higher-level EV value for EV 1 and input 87 
+set fmri(evg1.87) 1
 
-# Higher-level EV value for EV 1 and input 94
-set fmri(evg94.1) 1
+# Higher-level EV value for EV 1 and input 88 
+set fmri(evg1.88) 1
 
-# Higher-level EV value for EV 1 and input 95
-set fmri(evg95.1) 1
+# Higher-level EV value for EV 1 and input 89 
+set fmri(evg1.89) 1
 
-# Higher-level EV value for EV 1 and input 96
-set fmri(evg96.1) 1
+# Higher-level EV value for EV 1 and input 90 
+set fmri(evg1.90) 1
 
-# Higher-level EV value for EV 1 and input 97
-set fmri(evg97.1) 1
+# Higher-level EV value for EV 1 and input 91 
+set fmri(evg1.91) 1
 
-# Higher-level EV value for EV 1 and input 98
-set fmri(evg98.1) 1
+# Higher-level EV value for EV 1 and input 92 
+set fmri(evg1.92) 1
 
-# Higher-level EV value for EV 1 and input 99
-set fmri(evg99.1) 1
+# Higher-level EV value for EV 1 and input 93 
+set fmri(evg1.93) 1
 
-# Higher-level EV value for EV 1 and input 100
-set fmri(evg100.1) 1
+# Higher-level EV value for EV 1 and input 94 
+set fmri(evg1.94) 1
+
+# Higher-level EV value for EV 1 and input 95 
+set fmri(evg1.95) 1
+
+# Higher-level EV value for EV 1 and input 96 
+set fmri(evg1.96) 1
+
+# Higher-level EV value for EV 1 and input 97 
+set fmri(evg1.97) 1
+
+# Higher-level EV value for EV 1 and input 98 
+set fmri(evg1.98) 1
+
+# Higher-level EV value for EV 1 and input 99 
+set fmri(evg1.99) 1
+
+# Higher-level EV value for EV 1 and input 100 
+set fmri(evg1.100) 1
 
 # Group membership for input 1
 set fmri(groupmem.1) 1
@@ -650,8 +670,6 @@ set fmri(groupmem.17) 1
 # Group membership for input 18
 set fmri(groupmem.18) 1
 
-<<<<<<< HEAD
-=======
 # Group membership for input 19
 set fmri(groupmem.19) 1
 
@@ -900,7 +918,6 @@ set fmri(groupmem.100) 1
 
 
 # Contrast & F-tests mode
->>>>>>> a38fd9ac9f836f7b3047f3af17edd20c3d4459e5
 # real : control real EVs
 # orig : control original EVs
 set fmri(con_mode_old) real
