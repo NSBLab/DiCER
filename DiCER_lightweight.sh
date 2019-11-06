@@ -9,7 +9,9 @@
 
 print_usage() {
   printf "DiCER_lightweight\n
-This tool performs (Di)ffuse (C)luster (E)stimation and (R)egression on data without fmriprep preprocessing. Here, we take fmri data that has NOT been detrended or demeaned (important!) and either a tissue tissue classification which is a file that has the same dimensions as the functional image with the following labels: 1=CSF,2=GM,3=WM,4=Restricted GM this restricted GM just takes the GM mask and takes the top 70 percent of signals (i.e. top 70 relative to the mean) to estimate noisy signals.\n
+This tool performs (Di)ffuse (C)luster (E)stimation and (R)egression on data without fmriprep preprocessing. Here, we take fmri data that has NOT been detrended or demeaned (important!) and either a tissue tissue 
+classification which is a file that has the same dimensions as the functional image with the following labels: 1=CSF,2=GM,3=WM,4=Restricted GM this restricted GM just takes the GM mask and takes the top 70 percent 
+of signals (i.e. top 70 relative to the mean) to estimate noisy signals.\n
 Usage with tissue map: DiCER_lightweight.sh -i input_nifti -t tissue_file -w output_folder -s subjectID -c confounds.tsv\n\n
 Usage without tissue map: DiCER_lightweight.sh -i input_nifti -a T1w -w output_folder -s subjectID -c confounds.tsv\n\n
 Optional (and recommonded) flag is -d, this detrends and high-pass filters the data. This allows better estimation of regressors, and is a very light cleaning of your data.\n
