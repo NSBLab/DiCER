@@ -87,7 +87,7 @@ if $freesurfer;then
 	# will probably have to re-arrange the nifti -- then at the end of the whole shebang will have to re-sort.
 fi
 
-tissue_mask=$output_folder$tissue
+tissue_mask=$output_folder"/"$tissue
 
 
 # Make the tissue map if you have specificed the tissue map!
@@ -129,7 +129,7 @@ if $makeTissueMap;then
 	fslmaths $gm_mask_restrictive -mul $gm_mask_tmp -mul 2 $gm_mask_restrictive
 
 	# Now we have everything to work with and combine it all together now (fix up too many volumes)
-	tissue_mask=$output_folder$subject"_dtissue_func.nii.gz"
+	tissue_mask=$output_folder"/"$subject"_dtissue_func.nii.gz"
 	fslmaths $seg_temp -add $gm_mask_restrictive $tissue_mask
 
 	printf "\n\nSaved tissue mask in functional space and saved as: $tissue_mask\n"	
@@ -157,7 +157,7 @@ if [ $ds_factor -gt 0 ];then
 	echo ""
 	python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz"
 	base_tissue_mask=`basename $tissue_mask .nii.gz` 
-	tissue_mask_ds=$output_folder$base_tissue_mask"_dsFactor_"$ds_factor".nii.gz"
+	tissue_mask_ds=$output_folder"/"$base_tissue_mask"_dsFactor_"$ds_factor".nii.gz"
 	python utils/sparse_sample_tissue.py -o $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz" -ds $ds_factor -ts $tissue_mask -tsd $tissue_mask_ds
 	tissue_mask=$tissue_mask_ds
 fi
@@ -171,10 +171,10 @@ regressor_dbscan=$subject"_dbscan_liberal_regressors.csv"
 
 
 base_dicer_o=`basename $input .nii.gz`
-dicer_output=$output_folder$base_dicer_o"_dbscan.nii.gz"
+dicer_output=$output_folder"/"$base_dicer_o"_dbscan.nii.gz"
 
 printf "\n\nRegressing $input with DiCER signals and clean output is at $dicer_output \n\n\n"	
-python carpetCleaning/vacuum_dbscan.py -f $input_file -db $regressor_dbscan -s $subject -d $folder
+python carpetCleaning/vacuum_dbscan.py -f $input_file -db $regressor_dbscan -s $subject -d $folder"/"
 
 # Next stage: do the reporting, all done through "tapestry"
 
@@ -187,7 +187,7 @@ python fmriprepProcess/clusterReorder.py $tissue_mask '.' $input $folder $subjec
 # if $freesurfer;then
 # 	cluster_tissue_ordering=$output_folder"/tmp_dir/"$base_dicer_o"_clusterorder.nii.gz"	
 # else
-cluster_tissue_ordering=$output_folder$base_dicer_o"_clusterorder.nii.gz"	
+cluster_tissue_ordering=$output_folder"/"$base_dicer_o"_clusterorder.nii.gz"	
 # fi
 
 printf "\n\nPeforming GS re-ordering of $input (again use the mask) \n\n\n"	
@@ -198,7 +198,7 @@ gs_reordering_file=$output_folder"/"$subject_"gsReorder.nii.gz"
 printf "\n\nPeforming GMR of $orig \n\n\n"	
 gm_signal=$output_folder"/"$subject"_GMsignal.txt"
 fslmeants -i $input -o $gm_signal
-GMR_output=$output_folder$base_dicer_o"_GMR.nii.gz"
+GMR_output=$output_folder"/"$base_dicer_o"_GMR.nii.gz"
 fsl_regfilt -i $input -d $gm_signal -f 1 -o $GMR_output
 
 
@@ -221,6 +221,6 @@ fi
 # Surface niftis!
 if $freesurfer;then
 	printf "\n\n Now using the regression time series and regressing them from the original input \n\n\n"	
-	input=$output_folder$input_file
+	input=$output_folder"/"$input_file
 	python carpetCleaning/vacuum_dbscan.py -f $orig -db $regressor_dbscan -s $subject -d $folder	
 fi
