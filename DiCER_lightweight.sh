@@ -67,7 +67,7 @@ fi
 
 # Setting up extra variables once you have everything!
 folder=$output_folder #this is the working directory.
-input=$output_folder$input_file
+input=$output_folder"/"$input_file
 confounds=$output_folder$confounds
 
 
