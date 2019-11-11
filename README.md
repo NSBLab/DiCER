@@ -51,5 +51,7 @@ Note: this gives you a very lightweight HTML report, if you want more than just 
 # Notes/warnings
 Currently DiCER is suited for whole-brain rsfMRI studies and all the tools are tailored for this purpose. However estimation of the noisy regressors can come from a very coarse representation of the data. So working with higher resolution data can be achieved by using a downsampled version of the data and then applying fsl_regfilt with the discovered signals to the original resolution. Currently this is being tested on higher-resolution 7T fMRI task and rest data. 
 
+### Warnings!!!
+New fMRIprep (for v.1.4 onwards - tissue ordering is wrong, take care, will NOT work out of the box!)
 
 ## If you would like to use DiCER with your data please download the repository and feel free to contact us via Issues within this repository!
