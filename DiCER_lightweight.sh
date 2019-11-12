@@ -38,7 +38,7 @@ freesurfer="false"
 FSLOUTPUTTYPE=NIFTI_GZ
 
 # Have to make options if you need to generate a tissue file do so i.e. only if you specifiy the tissue file
-while getopts 'i:t:a:w:s:c:d:p:fh' flag; do
+while getopts 'i:t:a:w:s:c:dp:fh' flag; do
   case "${flag}" in
     i)  input_file="${OPTARG}" ;;  
     t)  tissue="${OPTARG}" ;;  
@@ -139,7 +139,7 @@ fi
 if $detrend;then
 	printf "\n\Detrending and high-pass filtering $input..\n\n\n"		
 	base_input=`basename $input .nii.gz`
-	output_detrended=$output_folder$base_input"_detrended_hpf.nii.gz"
+	output_detrended=$output_folder"/"$base_input"_detrended_hpf.nii.gz"
 	# Find a mask epi
 	mask_epi=$output_folder"/tmp_dir/"$subject"_mask_epi.nii.gz"
 	fslmaths $tissue_mask -bin $mask_epi
