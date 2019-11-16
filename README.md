@@ -49,9 +49,11 @@ where tissueSeg is a nifti which has the labels, 1=CSF,2=GM,3=WM,4=Restricted GM
 Note: this gives you HTML report without FD traces (its set to zero), and it calculates DVARS according to Nichols et al's standardized DVARS technique. 
 
 Adding movement parameters to the report
+
 ``
 sh DiCER_lightweight.sh -i $func -t $tissueSeg -w $pathToFiles -s SUBJECT_1 -d -m movFile.txt
 ``
+
 Now adds FD to the confounds file and displays a calcution of FD from a movement parameters file (a nframesX6 text file with realignment/motion correction parameters).
 
 # Notes/warnings
