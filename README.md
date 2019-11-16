@@ -29,8 +29,8 @@ To check out some of the reporting you get with DiCER please have a look at:
 https://bmhlab.github.io/DiCER_results/
 
 
-# DICER_lightweight
-If you have data that has not been fmriprep'd you can still run this code by running DiCER_lightweight
+# DICER_lightweight (reccomended!)
+If you have data that has not been fmriprep'd (or if your version of fMRIprep > v1.1.1( you can still run DiCER by running DiCER_lightweight.
 
 Typical usage with a functional image func, a T1w image T1w in path pathToFiles for subject SUBJECT_1 is invoked by the following:
 
@@ -46,7 +46,13 @@ sh DiCER_lightweight.sh -i $func -t $tissueSeg -w $pathToFiles -s SUBJECT_1 -d
 
 where tissueSeg is a nifti which has the labels, 1=CSF,2=GM,3=WM,4=Restricted GM i.e. Grey matter that is either eroded or just a subset of GM. The last label, 4, is the label that DiCER samples off to peform the correction. 
 
-Note: this gives you a very lightweight HTML report, if you want more than just a light report you need to specify a confounds.tsv file where importantly the 4th column is a DVARS calculation and the 7th Column is a FD calculation (the rest of the .tsv can contains zeros).
+Note: this gives you HTML report without FD traces (its set to zero), and it calculates DVARS according to Nichols et al's standardized DVARS technique. 
+
+Adding movement parameters to the report
+``
+sh DiCER_lightweight.sh -i $func -t $tissueSeg -w $pathToFiles -s SUBJECT_1 -d -m movFile.txt
+``
+Now adds FD to the confounds file and displays a calcution of FD from a movement parameters file (a nframesX6 text file with realignment/motion correction parameters).
 
 # Notes/warnings
 Currently DiCER is suited for whole-brain rsfMRI studies and all the tools are tailored for this purpose. However estimation of the noisy regressors can come from a very coarse representation of the data. So working with higher resolution data can be achieved by using a downsampled version of the data and then applying fsl_regfilt with the discovered signals to the original resolution. Currently this is being tested on higher-resolution 7T fMRI task and rest data. 
