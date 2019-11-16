@@ -33,12 +33,13 @@ makeTissueMap="false"
 use_confounds="false"
 ds_factor="0"
 freesurfer="false"
+mov_exists="false"
 
 # Everything will be in g-zipped niftis
 FSLOUTPUTTYPE=NIFTI_GZ
 
 # Have to make options if you need to generate a tissue file do so i.e. only if you specifiy the tissue file
-while getopts 'i:t:a:w:s:c:dp:fh' flag; do
+while getopts 'i:t:a:w:s:c:m:dp:fh' flag; do
   case "${flag}" in
     i)  input_file="${OPTARG}" ;;  
     t)  tissue="${OPTARG}" ;;  
@@ -47,7 +48,9 @@ while getopts 'i:t:a:w:s:c:dp:fh' flag; do
     w) 	output_folder="${OPTARG}" ;;    
 	s)  subject="${OPTARG}" ;;  
 	c) 	confounds="${OPTARG}" 
-		use_confounds="true";;  
+		use_confounds="true";;
+	m)  movement_params="${OPTARG}" 
+		mov_exists="true";;
 	d) 	detrend="true" ;;  
 	p)  ds_factor="${OPTARG}";;
 	f) 	freesurfer="true" ;;
@@ -205,15 +208,45 @@ fsl_regfilt -i $input -d $gm_signal -f 1 -o $GMR_output
 # Run the automated report:
 printf "\n\nRunning the carpet reports! This is to visualize the data in a way to evaluate the corrections \n\n\n"	
 
+if (! $use_confounds);then
+	# Here calculate DVARS and FD if the mov file has been created
+	DVARS_txt=$output_folder"/"$subject"_DVARS.txt"
+	# Calculate DVARS:
+	sh utils/calculate_dvars.sh $input $output_folder/tmp_dir/ $tissue_mask $DVARS_txt
+	echo $DVARS_txt	
+	# Now generate the confounds file
+	bind -u complete # Here to ensure the tabs are not included in the pasting
+	declare -i nRow
+	nRow=$(cat $DVARS_txt | wc -l)
+	echo $nRow
+	zerofile=$output_folder/tmp_dir/zeros.txt 
+	yes 0 | head -$nRow > $zerofile
+	printf "DVARS\n0\n$(cat $DVARS_txt)" > $DVARS_txt
+	# printf "0\n$(cat $DVARS_txt)" > $DVARS_txt
+	printf "col0\n$(cat $zerofile)" > $zerofile
 
 
+	if $mov_exists;then
+		# Here calculate Framewise displacement 
+		FD_file=$output_folder"/"$subject"_FD_calc.txt"
 
-# Here is a way to use confounds in the report, if they are not called then they will NOT appear in the automated report
-if $use_confounds;then
-	python carpetReport/tapestry.py -f $input","$GMR_output","$dicer_output -fl "INPUT,GMR,DICER"  -o $cluster_tissue_ordering,$gs_reordering_file -l "CLUST,GSO" -s $subject -d $output_folder"/" -ts $tissue_mask -reg $output_folder"/"$regressor_dbscan -cf $confounds
-else
-	python carpetReport/tapestry.py -f $input","$GMR_output","$dicer_output -fl "INPUT,GMR,DICER"  -o $cluster_tissue_ordering,$gs_reordering_file -l "CLUST,GSO" -s $subject -d $output_folder"/" -ts $tissue_mask
+		python utils/calculate_FD.py -mov $output_folder"/"$movement_params -out $FD_file
+		# FD_file_tmp=$output_folder"/"$subject"_FD_calc_tmp.txt"
+		# echo "0
+		# $(cat $FD_file)" > $FD_file
+		printf "FD\n$(cat $FD_file)" > $FD_file
+
+		paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $FD_file > $output_folder"/"$subject"confounds.tsv"
+	else
+		paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $zerofile > $output_folder"/"$subject"confounds.tsv"
+	fi
+	confounds=$output_folder"/"$subject"confounds.tsv"
 fi
+
+
+# Generate the carpet report here:
+python carpetReport/tapestry.py -f $input","$GMR_output","$dicer_output -fl "INPUT,GMR,DICER"  -o $cluster_tissue_ordering,$gs_reordering_file -l "CLUST,GSO" -s $subject -d $output_folder"/" -ts $tissue_mask -reg $output_folder"/"$regressor_dbscan -cf $confounds
+
 
 # Have to at the end work with vacuuming the original file
 
