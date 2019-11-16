@@ -198,7 +198,7 @@ python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of $output_folde
 gs_reordering_file=$output_folder"/"$subject_"gsReorder.nii.gz"
 
 
-printf "\n\nPeforming GMR of $orig \n\n\n"	
+printf "\n\nPeforming GMR of $input \n\n\n"	
 gm_signal=$output_folder"/"$subject"_GMsignal.txt"
 fslmeants -i $input -o $gm_signal
 GMR_output=$output_folder"/"$base_dicer_o"_GMR.nii.gz"
@@ -238,7 +238,10 @@ if (! $use_confounds);then
 
 		paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $FD_file > $output_folder"/"$subject"confounds.tsv"
 	else
-		paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $zerofile > $output_folder"/"$subject"confounds.tsv"
+		fakefdfile=$output_folder/tmp_dir/fake_fd.txt 
+		yes 0 | head -$nRow > $fakefdfile
+		printf "FD\n0\n$(cat $fakefdfile)" > $fakefdfile
+		paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $fakefdfile > $output_folder"/"$subject"confounds.tsv"
 	fi
 	confounds=$output_folder"/"$subject"confounds.tsv"
 fi
