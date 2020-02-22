@@ -3,7 +3,7 @@
 # DiCER
 (D)(i)iffuse (C)luster (E)stimation and (R)egression.
 
-This repository holds all the DiCER code to denoise resting state fMRI data. For more information of the algorithm see the following BioRxiv preprint here ---> https://www.biorxiv.org/content/10.1101/662726v1
+This repository holds all the DiCER code to denoise resting state fMRI data. For more information of the algorithm see the paper here: ---> https://www.sciencedirect.com/science/article/pii/S1053811920301014 
 
 # Instructions:
 DiCER is set to run post fMRIprep (v1.1.1) as a method to additionaly denoise data that has already undergone ICA-AROMA denoising.
@@ -28,6 +28,8 @@ sh carpetCleaner.sh
 To check out some of the reporting you get with DiCER please have a look at:
 https://bmhlab.github.io/DiCER_results/
 
+# Some warnings (please read)
+As with all unsupervised de-noising methods, sometimes over-correction can be an issue (see the discussion of this within the paper). We thus urge investigators that use this method to look over the estimated noise regressors (from DiCER) and if over correction is suspected we reccomend to either: Remove these hamrful regressors from your noise removal OR to vary the DiCER parameters in your experiment. Please see the code within clusterCorrect.py for more details. (This will be added as an input to DiCER_lightweight soon).
 
 # DICER_lightweight (reccomended!)
 If you have data that has not been fmriprep'd (or if your version of fMRIprep > v1.1.1( you can still run DiCER by running DiCER_lightweight.
