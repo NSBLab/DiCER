@@ -134,6 +134,7 @@ if $makeTissueMap;then
 	# Now we have everything to work with and combine it all together now (fix up too many volumes)
 	tissue_mask=$output_folder"/"$subject"_dtissue_func.nii.gz"
 	fslmaths $seg_temp -add $gm_mask_restrictive $tissue_mask
+	fslroi $tissue_mask $tissue_mask 0 1
 
 	printf "\n\nSaved tissue mask in functional space and saved as: $tissue_mask\n"	
 fi
