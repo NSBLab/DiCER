@@ -28,7 +28,9 @@ You will need to set the following bash environment variables:
 
 and then run:
 
+```
 sh carpetCleaner.sh
+```
 
 To check out some of the reporting you get with DiCER please have a look at our [DiCER results website](https://bmhlab.github.io/DiCER_results/).
 
