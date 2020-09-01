@@ -39,7 +39,7 @@ As with all unsupervised de-noising methods, sometimes over-correction can be an
 We thus urge investigators that use this method to look over the estimated noise regressors (from DiCER) and if over correction is suspected we reccommend to either: Remove these harmful regressors from your noise removal OR to vary the DiCER parameters in your experiment.
 Please see the code within `clusterCorrect.py` for more details. (This will be added as an input to `DiCER_lightweight` soon).
 
-# DICER_lightweight (reccomended!)
+# DICER_lightweight (reccommended!)
 If you have data that has not been `fmriprep`'d (or if your version of fMRIprep > v1.1.1 (you can still run DiCER by running `DiCER_lightweight`).
 
 Typical usage with a functional image func, a T1w image T1w in path pathToFiles for subject SUBJECT_1 is invoked by the following:
