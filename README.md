@@ -36,7 +36,7 @@ To check out some of the reporting you get with DiCER please have a look at our 
 
 # Some warnings (please read)
 As with all unsupervised de-noising methods, sometimes over-correction can be an issue (see the discussion of this within the paper).
-We thus urge investigators that use this method to look over the estimated noise regressors (from DiCER) and if over correction is suspected we reccomend to either: Remove these hamrful regressors from your noise removal OR to vary the DiCER parameters in your experiment.
+We thus urge investigators that use this method to look over the estimated noise regressors (from DiCER) and if over correction is suspected we reccommend to either: Remove these harmful regressors from your noise removal OR to vary the DiCER parameters in your experiment.
 Please see the code within `clusterCorrect.py` for more details. (This will be added as an input to `DiCER_lightweight` soon).
 
 # DICER_lightweight (reccomended!)
