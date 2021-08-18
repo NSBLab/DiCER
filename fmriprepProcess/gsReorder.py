@@ -5,8 +5,8 @@
 # This is a python script to generate a carpet plot from given argeuments.
 
 import warnings
-warnings.filterwarnings("ignore", category=DeprecationWarning) 
-warnings.filterwarnings("ignore", category=FutureWarning) 
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # Import the right things.
 import sys
@@ -18,13 +18,13 @@ from scipy import stats
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from utils import fMRI_in_out as mrutils
 
-# Take a signal, then reorder using this. 
+# Take a signal, then reorder using this.
 
 
 def main(raw_args=None):
 
 	# tissue,mask_voxels,time_series):
-		
+
 	# Parse in inputs
 	from argparse import ArgumentParser
 	parser = ArgumentParser(epilog="gsReorder.py -- A function to generate a list of reordering indices for each tissue type. Kevin Aquino 2018 BMH")
@@ -42,18 +42,18 @@ def main(raw_args=None):
 	args = parser.parse_args(raw_args)
 
 	# Setting the arguments
-	func 	= args.func		
+	func    = args.func
 	dtissue = args.dtissue
 	outputFileName = args.outputFileName
  	# print('In gsReorder.py')
-	# Once we have the files lets import some stuff	
-	time_series,dimsF	= mrutils.import_nifti(func)
-	tissue,dimsTs 		= mrutils.import_nifti(dtissue)
+	# Once we have the files lets import some stuff
+	time_series,dimsF = mrutils.import_nifti(func)
+	tissue,dimsTs     = mrutils.import_nifti(dtissue)
 
 	# Will have to look GM time series without the inclusion masks
-	CSF_ind	= 1
-	GMI_ind	= 2
-	WM_ind	= 3
+	CSF_ind = 1
+	GMI_ind = 2
+	WM_ind  = 3
 	GM_dbscan = 4
 
 	GM_vox=np.squeeze(np.where(tissue==GMI_ind))
@@ -64,13 +64,13 @@ def main(raw_args=None):
 	WM_vox=np.squeeze(np.where(tissue==WM_ind))
 	CSF_vox=np.squeeze(np.where(tissue==CSF_ind))
 	# import pdb;pdb.set_trace()
-	# Probably have to get rid of nans/zeros etc -- better not done here, this here is just to visualize	
+	# Probably have to get rid of nans/zeros etc -- better not done here, this here is just to visualize
 	gm_time_series = time_series[GM_vox,:]
 	gm_dbscan_time_series = time_series[GMdbscan_vox,:]
 	wm_time_series = time_series[WM_vox,:]
 	csf_time_series = time_series[CSF_vox,:]
 
-	# Now get the GS reorder	
+	# Now get the GS reorder
 	gm_dbscan_ordered_inds = generate_ordering(gm_dbscan_time_series)
 
 	# A little clause here just incase you are not defining any other regions, make them empty
@@ -80,16 +80,16 @@ def main(raw_args=None):
 
 	if (np.shape(GM_vox)[0]>0):
 		gm_ordered_inds = generate_ordering(gm_time_series)
- 	if (np.shape(WM_vox)[0]>0):
-		wm_ordered_inds = generate_ordering(wm_time_series)		
+	if (np.shape(WM_vox)[0]>0):
+		wm_ordered_inds = generate_ordering(wm_time_series)
 	if (np.shape(CSF_vox)[0]>0):
 		csf_ordered_inds = generate_ordering(csf_time_series)
-	
+
 	# import pdb;pdb.set_trace()
 	# Now make a new matrix and save the nifti!
 	tissue[GM_vox] = gm_ordered_inds
 	tissue[GMdbscan_vox] = gm_dbscan_ordered_inds
-	tissue[WM_vox] = wm_ordered_inds 
+	tissue[WM_vox] = wm_ordered_inds
 	tissue[CSF_vox] = csf_ordered_inds
 
 	mrutils.nifti_save(tissue,dimsTs,outputFileName)
@@ -106,13 +106,13 @@ def generate_ordering(time_series_tissue):
 	import time
 	start_time = time.time()
 	for ind in range(0,X_z.shape[0]):
-		co = np.corrcoef(X_z[ind,:],mean_signal)	
+		co = np.corrcoef(X_z[ind,:],mean_signal)
 		corr[ind] = co[1,0]
 	print("Correlations took --- %s seconds ---" % (time.time() - start_time))
 
 	# Now retrieve the ordered indices.
 	orderedIndex = np.argsort(corr[:,0])
- 	return orderedIndex
+	return orderedIndex
 
 if __name__ == '__main__':
     main()

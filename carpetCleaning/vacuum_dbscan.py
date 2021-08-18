@@ -48,19 +48,19 @@ import numpy as np
 
 with open(folder+dbscan_regressors, 'rb') as csvfile:
 	spamreader = csv.reader(csvfile, delimiter=',')
-	# row_count = sum(1 for row_dummy in spamreader)	
+	# row_count = sum(1 for row_dummy in spamreader)
 	total = []
 	counter = 0;
-	# counter = 
+	# counter =
 	for num,row in enumerate(spamreader):
 		if(num>0):
-			# print row			
-			val2=np.array(row)			
-			vals = val2.astype(float)			
+			# print row
+			val2=np.array(row)
+			vals = val2.astype(float)
 			total = np.append(total,vals[1:len(vals)])
 			counter=counter+1
 			nframes=len(row)-1
-			
+
 total2=np.reshape(total,(nframes,counter),order="F")
 
 np.savetxt(dbscan_tsv, total2, delimiter="\t")

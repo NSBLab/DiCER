@@ -46,36 +46,36 @@ def main(raw_args=None):
 
 	with open(regressors, 'rb') as csvfile:
 		spamreader = csv.reader(csvfile, delimiter=',')
-		# row_count = sum(1 for row_dummy in spamreader)	
+		# row_count = sum(1 for row_dummy in spamreader)
 		total = []
 		counter = 0;
-		# counter = 
+		# counter =
 		for num,row in enumerate(spamreader):
 			if(num>0):
-				# print row			
-				val2=np.array(row)			
-				vals = val2.astype(float)			
+				# print row
+				val2=np.array(row)
+				vals = val2.astype(float)
 				total = np.append(total,vals[1:len(vals)])
 				counter=counter+1
 				nframes=len(row)-1
-				
+
 	total2=np.reshape(total,(nframes,counter),order="F")
 
 
 	confound_num = 0
 	with open(confounds,'rb') as tsvin:
 		tsvin = csv.reader(tsvin, delimiter='\t')
-		total_confounds = []	
-		# counter = 
+		total_confounds = []
+		# counter =
 		for num,row in enumerate(tsvin):
 			if(num==0):
 				headings=row
 			else:
-				# print row			
-				vals=np.array(row)			
+				# print row
+				vals=np.array(row)
 				# import pdb; pdb.set_trace()
-				# vals = val2.astype(float)			
-				total_confounds = np.append(total_confounds,vals)		
+				# vals = val2.astype(float)
+				total_confounds = np.append(total_confounds,vals)
 				# confound_num = confound_num+1
 
 	# import pdb; pdb.set_trace()
@@ -83,9 +83,9 @@ def main(raw_args=None):
 
 
 	# Here start the plotting
-	fig = plt.figure(figsize=(5, 3.5), dpi=300) 
+	fig = plt.figure(figsize=(5, 3.5), dpi=300)
 
-	gs = gridspec.GridSpec(counter+2, 1) 
+	gs = gridspec.GridSpec(counter+2, 1)
 
 	# Setupcolor vector:
 	cols = np.array(([1,0,0],[0,1,0],[0,0,1],[0.5,0.5,0],[0,0.5,0.5],[0,0.5,0.5]))
@@ -133,10 +133,8 @@ def main(raw_args=None):
 
 	# Now also show some correlation plots just to make sure nothing is really correlated to FD?
 	# for k in range(0,counter):
-	# 	plt.scatter(FD,total2[:,k],c=cols[k,:],label='REG:'+str(k))	
+	# 	plt.scatter(FD,total2[:,k],c=cols[k,:],label='REG:'+str(k))
 	# plt.legend(loc=2)
 	# saveName=folder_save+subject+'_regressors_cor.png'
 	# plt.savefig(saveName)
 	# plt.clf()
-
-
