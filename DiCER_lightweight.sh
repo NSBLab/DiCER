@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# This here is a lightweight version of DiCER, this does not assume you have run fmriprep, it just takes your own preprocessing, 
+set -euo pipefail
+
+# This here is a lightweight version of DiCER, this does not assume you have run fmriprep, it just takes your own preprocessing,
 # and then applies DiCER to the result.
 
 # This does require some inputs though:
@@ -221,7 +223,12 @@ if (! $use_confounds);then
     nRow=$(cat $DVARS_txt | wc -l)
     echo $nRow
     zerofile=$output_folder/tmp_dir/zeros.txt
+
+    # Temporarily disable pipefail to avoid the failure here
+    set +o pipefail
     yes 0 | head -$nRow > $zerofile
+    set -o pipefail
+
     printf "DVARS\n0\n$(cat $DVARS_txt)" > $DVARS_txt
     # printf "0\n$(cat $DVARS_txt)" > $DVARS_txt
     printf "col0\n$(cat $zerofile)" > $zerofile
@@ -240,7 +247,12 @@ if (! $use_confounds);then
         paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $FD_file > $output_folder"/"$subject"confounds.tsv"
     else
         fakefdfile=$output_folder/tmp_dir/fake_fd.txt
+
+        # Temporarily disable pipefail to avoid the failure here
+        set +o pipefail
         yes 0 | head -$nRow > $fakefdfile
+        set -o pipefail
+
         printf "FD\n0\n$(cat $fakefdfile)" > $fakefdfile
         paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $fakefdfile > $output_folder"/"$subject"confounds.tsv"
     fi

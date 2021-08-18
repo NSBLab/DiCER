@@ -1,5 +1,7 @@
 # !/bin/bash
-# 
+#
+set -euo pipefail
+
 # calculate_dvars.sh
 # Taken from Thomas Nicols' paper on calculating DVARS
 #
