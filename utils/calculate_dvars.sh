@@ -17,6 +17,7 @@ FUNC=$1
 Tmp=$2
 tissueMask=$3
 OUT=$4
+AllVers=""
 
 # Find mean over time
 fslmaths "$FUNC" -Tmean $Tmp-Mean
