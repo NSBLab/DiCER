@@ -149,7 +149,7 @@ if $detrend;then
     # Find a mask epi
     mask_epi=$output_folder"/tmp_dir/"$subject"_mask_epi.nii.gz"
     fslmaths $tissue_mask -bin $mask_epi
-    sh fmriprepProcess/preprocess_fmriprep.sh $input $output_detrended $output_folder $mask_epi
+    bash fmriprepProcess/preprocess_fmriprep.sh $input $output_detrended $output_folder $mask_epi
     # Now change all the inputs to work on the deterended versions
     input=$output_detrended
     input_file=$base_input"_detrended_hpf.nii.gz"
@@ -215,7 +215,7 @@ if (! $use_confounds);then
     # Here calculate DVARS and FD if the mov file has been created
     DVARS_txt=$output_folder"/"$subject"_DVARS.txt"
     # Calculate DVARS:
-    sh utils/calculate_dvars.sh $input $output_folder/tmp_dir/ $tissue_mask $DVARS_txt
+    bash utils/calculate_dvars.sh $input $output_folder/tmp_dir/ $tissue_mask $DVARS_txt
     echo $DVARS_txt
     # Now generate the confounds file
     bind -u complete # Here to ensure the tabs are not included in the pasting
