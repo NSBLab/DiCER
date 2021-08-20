@@ -44,7 +44,7 @@ def main(raw_args=None):
 	import matplotlib.pyplot as plt
 	from matplotlib import gridspec
 
-	with open(regressors, 'rb') as csvfile:
+	with open(regressors, 'r') as csvfile:
 		spamreader = csv.reader(csvfile, delimiter=',')
 		# row_count = sum(1 for row_dummy in spamreader)	
 		total = []
@@ -63,7 +63,7 @@ def main(raw_args=None):
 
 
 	confound_num = 0
-	with open(confounds,'rb') as tsvin:
+	with open(confounds,'r') as tsvin:
 		tsvin = csv.reader(tsvin, delimiter='\t')
 		total_confounds = []	
 		# counter = 
