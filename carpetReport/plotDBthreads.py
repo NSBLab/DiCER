@@ -39,7 +39,6 @@ def main(raw_args=None):
 
 
 	import csv
-	from itertools import izip
 	import numpy as np
 	import matplotlib.pyplot as plt
 	from matplotlib import gridspec

@@ -43,7 +43,6 @@ output=folder+nifti_gz[0:len(nifti_gz)-7]+"_"+outputFlag+".nii.gz"
 nifti_gz=folder+nifti_gz
 
 import csv
-from itertools import izip
 import numpy as np
 
 with open(folder+dbscan_regressors, 'rb') as csvfile:
