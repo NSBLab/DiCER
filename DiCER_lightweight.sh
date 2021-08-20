@@ -197,8 +197,8 @@ cluster_tissue_ordering=$output_folder"/"$base_dicer_o"_clusterorder.nii.gz"
 # fi
 
 printf "\n\nPeforming GS re-ordering of $input (again use the mask) \n\n\n"
-python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of $output_folder"/"$subject_"gsReorder.nii.gz"
-gs_reordering_file=$output_folder"/"$subject_"gsReorder.nii.gz"
+python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of ${output_folder}/${subject}_gsReorder.nii.gz
+gs_reordering_file=${output_folder}/${subject}_gsReorder.nii.gz
 
 
 printf "\n\nPeforming GMR of $input \n\n\n"
