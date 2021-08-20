@@ -72,27 +72,27 @@ fi
 
 # Setting up extra variables once you have everything!
 folder=$output_folder #this is the working directory.
-input=$output_folder"/"$input_file
-confounds=$output_folder$confounds
+input=${output_folder}/${input_file}
+confounds=${output_folder}/${confounds}
 
 
 # Surface niftis!
 if $freesurfer;then
     # Change the dimensions of the nifti to make it work with the rest of the script, currently doesn't handle giftis or ciftis directly, making this shortcut to have the code work all the way through
-    outFile=$output_folder"/func_temp.nii.gz"
+    outFile=${output_folder}/func_temp.nii.gz
     python hcp_processing/reshapeSurfaceNifti.py -f $input -o $outFile
     input=$outFile
     orig=$input_file
     input_file="func_temp.nii.gz"
     # Here just making a tissue file based just on the surface time series, i.e. setting it that all time series on the vertices are used in the estimation of regressors.
-    fslmaths $input -Tmean -abs -bin -mul 4 $output_folder"tissue.nii.gz"
+    fslmaths $input -Tmean -abs -bin -mul 4 ${output_folder}/tissue.nii.gz
     tissue="tissue.nii.gz"
     # Here just making sure that the tissue map isn't made.
     makeTissueMap="false"
     # will probably have to re-arrange the nifti -- then at the end of the whole shebang will have to re-sort.
 fi
 
-tissue_mask=$output_folder"/"$tissue
+tissue_mask=${output_folder}/$tissue
 
 
 # Make the tissue map if you have specificed the tissue map!
@@ -102,25 +102,25 @@ tissue_mask=$output_folder"/"$tissue
 if $makeTissueMap;then
     printf "\n\nPeforming FAST tissue segmentation with anatomical image $anatomical\n"
     # Perform FAST segmentation:
-    fast -o $output_folder"/tmp_dir/"$subject $output_folder"/"$anatomical
+    fast -o ${output_folder}/tmp_dir/${subject} ${output_folder}/${anatomical}
 
     # Get the segmentation file:
-    segmentation_file=$output_folder"/tmp_dir/"$subject"_seg"
+    segmentation_file=${output_folder}/tmp_dir/${subject}_seg
 
     # Now apply the flirt command to get the segmentation into the func space:
-    seg_temp=$output_folder"/tmp_dir/"$subject"_seg_temp"
+    seg_temp=${output_folder}/tmp_dir/${subject}_seg_temp
     flirt -in $segmentation_file -ref $input -out $seg_temp -applyxfm -interp nearestneighbour -usesqform
 
     # Now using the standard convention in FAST we generate the tissue types
     # GM - be a little more conservative above what FAST gives out in its hard segmentation:
-    flirt -in $output_folder"/tmp_dir/"$subject"_pve_1.nii.gz" -out $output_folder"/tmp_dir/"$subject"_ds_gm.nii.gz" -ref $input -applyxfm -usesqform
-    gm_mask_tmp=$output_folder"/tmp_dir/"$subject"_gm_mask"
-    fslmaths $output_folder"/tmp_dir/"$subject"_ds_gm.nii.gz" -thr 0.5 -bin $gm_mask_tmp
+    flirt -in ${output_folder}/tmp_dir/${subject}_pve_1.nii.gz -out ${output_folder}/tmp_dir/${subject}_ds_gm.nii.gz -ref $input -applyxfm -usesqform
+    gm_mask_tmp=${output_folder}/tmp_dir/${subject}_gm_mask
+    fslmaths ${output_folder}/tmp_dir/${subject}_ds_gm.nii.gz -thr 0.5 -bin $gm_mask_tmp
     # Use the probability mask and threshold that one
     # fslmaths $seg_temp -thr 2 -uthr 2 -bin $gm_mask_tmp
 
     # Generate masks for GM to make it more restrictive:
-    mean_ts=$output_folder"/tmp_dir/"$subject"_mean_ts"
+    mean_ts=${output_folder}/tmp_dir/${subject}_mean_ts
     fslmaths $input -Tmean $mean_ts
     # Taking the mean ts image, and just focusing in on grey matter
     fslmaths $mean_ts -mul $gm_mask_tmp $mean_ts
@@ -129,12 +129,12 @@ if $makeTissueMap;then
     read min max <<< $(fslstats $mean_ts -r)
 
     # Normalize the image and threshold the map to make a mask of epi of the top 60% of image intensity
-    gm_mask_restrictive=$output_folder"/tmp_dir/"$subject"_mask_restrictive"
+    gm_mask_restrictive=${output_folder}/tmp_dir/${subject}_mask_restrictive
     fslmaths $mean_ts -div $max -thr 0.3 -bin $gm_mask_restrictive
     fslmaths $gm_mask_restrictive -mul $gm_mask_tmp -mul 2 $gm_mask_restrictive
 
     # Now we have everything to work with and combine it all together now (fix up too many volumes)
-    tissue_mask=$output_folder"/"$subject"_dtissue_func.nii.gz"
+    tissue_mask=${output_folder}/${subject}_dtissue_func.nii.gz
     fslmaths $seg_temp -add $gm_mask_restrictive $tissue_mask
     fslroi $tissue_mask $tissue_mask 0 1
 
@@ -145,26 +145,26 @@ fi
 if $detrend;then
     printf "\n\Detrending and high-pass filtering $input..\n\n\n"
     base_input=`basename $input .nii.gz`
-    output_detrended=$output_folder"/"$base_input"_detrended_hpf.nii.gz"
+    output_detrended=${output_folder}/${base_input}_detrended_hpf.nii.gz
     # Find a mask epi
-    mask_epi=$output_folder"/tmp_dir/"$subject"_mask_epi.nii.gz"
+    mask_epi=${output_folder}/tmp_dir/${subject}_mask_epi.nii.gz
     fslmaths $tissue_mask -bin $mask_epi
     bash fmriprepProcess/preprocess_fmriprep.sh $input $output_detrended $output_folder $mask_epi
     # Now change all the inputs to work on the deterended versions
     input=$output_detrended
-    input_file=$base_input"_detrended_hpf.nii.gz"
+    input_file=${base_input}_detrended_hpf.nii.gz
 fi
 
 if [ $ds_factor -gt 0 ];then
     printf "\n Creating a sparse-sampling of the tissue mask based on the correlation to the global signal for each voxel.\n"
     echo $input
     echo $tissue_mask
-    echo $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz"
+    echo ${output_folder}/tmp_dir/${subject}gsReorder.nii.gz
     echo ""
-    python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz"
+    python fmriprepProcess/gsReorder.py -f $input -ts $tissue_mask -of ${output_folder}/tmp_dir/${subject}gsReorder.nii.gz
     base_tissue_mask=`basename $tissue_mask .nii.gz`
-    tissue_mask_ds=$output_folder"/"$base_tissue_mask"_dsFactor_"$ds_factor".nii.gz"
-    python utils/sparse_sample_tissue.py -o $output_folder"/tmp_dir/"$subject"gsReorder.nii.gz" -ds $ds_factor -ts $tissue_mask -tsd $tissue_mask_ds
+    tissue_mask_ds=${output_folder}/${base_tissue_mask}_dsFactor_${ds_factor}.nii.gz
+    python utils/sparse_sample_tissue.py -o ${output_folder}/tmp_dir/${subject}gsReorder.nii.gz -ds $ds_factor -ts $tissue_mask -tsd $tissue_mask_ds
     tissue_mask=$tissue_mask_ds
 fi
 
@@ -173,14 +173,14 @@ printf "\n\nPerfoming DiCER..\n\n\n"
 python carpetCleaning/clusterCorrect.py $tissue_mask '.' $input $folder $subject
 
 # Regress out all the regressors
-regressor_dbscan=$subject"_dbscan_liberal_regressors.csv"
+regressor_dbscan=${subject}_dbscan_liberal_regressors.csv
 
 
 base_dicer_o=`basename $input .nii.gz`
-dicer_output=$output_folder"/"$base_dicer_o"_dbscan.nii.gz"
+dicer_output=${output_folder}/${base_dicer_o}_dbscan.nii.gz
 
 printf "\n\nRegressing $input with DiCER signals and clean output is at $dicer_output \n\n\n"
-python carpetCleaning/vacuum_dbscan.py -f $input_file -db $regressor_dbscan -s $subject -d $folder"/"
+python carpetCleaning/vacuum_dbscan.py -f $input_file -db $regressor_dbscan -s $subject -d ${folder}/
 
 # Next stage: do the reporting, all done through "tapestry"
 
@@ -193,7 +193,7 @@ python fmriprepProcess/clusterReorder.py $tissue_mask '.' $input $folder $subjec
 # if $freesurfer;then
 #  cluster_tissue_ordering=$output_folder"/tmp_dir/"$base_dicer_o"_clusterorder.nii.gz"
 # else
-cluster_tissue_ordering=$output_folder"/"$base_dicer_o"_clusterorder.nii.gz"
+cluster_tissue_ordering=${output_folder}/${base_dicer_o}_clusterorder.nii.gz
 # fi
 
 printf "\n\nPeforming GS re-ordering of $input (again use the mask) \n\n\n"
@@ -202,9 +202,9 @@ gs_reordering_file=${output_folder}/${subject}_gsReorder.nii.gz
 
 
 printf "\n\nPeforming GMR of $input \n\n\n"
-gm_signal=$output_folder"/"$subject"_GMsignal.txt"
+gm_signal=${output_folder}/${subject}_GMsignal.txt
 fslmeants -i $input -o $gm_signal
-GMR_output=$output_folder"/"$base_dicer_o"_GMR.nii.gz"
+GMR_output=${output_folder}/${base_dicer_o}_GMR.nii.gz
 fsl_regfilt -i $input -d $gm_signal -f 1 -o $GMR_output
 
 
@@ -213,7 +213,7 @@ printf "\n\nRunning the carpet reports! This is to visualize the data in a way t
 
 if (! $use_confounds);then
     # Here calculate DVARS and FD if the mov file has been created
-    DVARS_txt=$output_folder"/"$subject"_DVARS.txt"
+    DVARS_txt=${output_folder}/${subject}_DVARS.txt
     # Calculate DVARS:
     bash utils/calculate_dvars.sh $input $output_folder/tmp_dir/ $tissue_mask $DVARS_txt
     echo $DVARS_txt
@@ -236,15 +236,15 @@ if (! $use_confounds);then
 
     if $mov_exists;then
         # Here calculate Framewise displacement
-        FD_file=$output_folder"/"$subject"_FD_calc.txt"
+        FD_file=${output_folder}/${subject}_FD_calc.txt
 
-        python utils/calculate_FD.py -mov $output_folder"/"$movement_params -out $FD_file
+        python utils/calculate_FD.py -mov ${output_folder}/${movement_params} -out $FD_file
         # FD_file_tmp=$output_folder"/"$subject"_FD_calc_tmp.txt"
         # echo "0
         # $(cat $FD_file)" > $FD_file
         printf "FD\n$(cat $FD_file)" > $FD_file
 
-        paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $FD_file > $output_folder"/"$subject"confounds.tsv"
+        paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $FD_file > ${output_folder}/${subject}confounds.tsv
     else
         fakefdfile=$output_folder/tmp_dir/fake_fd.txt
 
@@ -254,14 +254,14 @@ if (! $use_confounds);then
         set -o pipefail
 
         printf "FD\n0\n$(cat $fakefdfile)" > $fakefdfile
-        paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $fakefdfile > $output_folder"/"$subject"confounds.tsv"
+        paste -d "\t" $zerofile $zerofile $zerofile $DVARS_txt $zerofile $zerofile $fakefdfile > ${output_folder}/${subject}confounds.tsv
     fi
-    confounds=$output_folder"/"$subject"confounds.tsv"
+    confounds=${output_folder}/${subject}confounds.tsv
 fi
 
 
 # Generate the carpet report here:
-python carpetReport/tapestry.py -f $input","$GMR_output","$dicer_output -fl "INPUT,GMR,DICER"  -o $cluster_tissue_ordering,$gs_reordering_file -l "CLUST,GSO" -s $subject -d $output_folder"/" -ts $tissue_mask -reg $output_folder"/"$regressor_dbscan -cf $confounds
+python carpetReport/tapestry.py -f ${input},${GMR_output},${dicer_output} -fl "INPUT,GMR,DICER"  -o ${cluster_tissue_ordering},${gs_reordering_file} -l "CLUST,GSO" -s $subject -d ${output_folder}/ -ts $tissue_mask -reg ${output_folder}/${regressor_dbscan} -cf $confounds
 
 
 # Have to at the end work with vacuuming the original file
@@ -269,6 +269,6 @@ python carpetReport/tapestry.py -f $input","$GMR_output","$dicer_output -fl "INP
 # Surface niftis!
 if $freesurfer;then
     printf "\n\n Now using the regression time series and regressing them from the original input \n\n\n"
-    input=$output_folder"/"$input_file
-    python carpetCleaning/vacuum_dbscan.py -f $orig -db $regressor_dbscan -s $subject -d $folder"/"
+    input=${output_folder}/${input_file}
+    python carpetCleaning/vacuum_dbscan.py -f $orig -db $regressor_dbscan -s $subject -d ${folder}/
 fi
