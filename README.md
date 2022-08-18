@@ -3,7 +3,7 @@
 # DiCER
 (D)(i)iffuse (C)luster (E)stimation and (R)egression.
 
-This repository holds all the DiCER code to denoise resting state fMRI data.
+This repository holds all the DiCER code (https://github.com/BMHLab/DiCER) to denoise resting state fMRI data.
 
 For more information on the algorithm and its performance, please see [our NeuroImage paper](https://doi.org/10.1016/j.neuroimage.2020.116614).
 
