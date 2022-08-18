@@ -80,3 +80,15 @@ Currently this is being tested on higher-resolution 7T fMRI task and rest data.
 New fMRIprep (for v.1.4 onwards - tissue ordering is wrong, take care, will NOT work out of the box!)
 
 ## If you would like to use DiCER with your data please download the repository and feel free to contact us via Issues within this repository!
+
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LJ3T0CC1J5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LJ3T0CC1J5');
+</script>
