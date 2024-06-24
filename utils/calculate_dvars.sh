@@ -1,8 +1,10 @@
 # !/bin/bash
-# 
+#
+set -euo pipefail
+
 # calculate_dvars.sh
 # Taken from Thomas Nicols' paper on calculating DVARS
-# 
+#
 # Here is a tool to calculate DVARS
 
 # folder=/Users/kevinaquino/projects/HCP/100206
@@ -10,11 +12,12 @@
 # tissueMask=$folder/tissue.nii.gz
 # OUT=$folder/dvars.txt
 # FUNC=$folder/100206_task_dm_dbscan.nii.gz
-# 
+#
 FUNC=$1
 Tmp=$2
 tissueMask=$3
 OUT=$4
+AllVers=""
 
 # Find mean over time
 fslmaths "$FUNC" -Tmean $Tmp-Mean
