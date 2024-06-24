@@ -36,7 +36,7 @@ echo -n "."
 # Compute temporal difference time series
 nVol=$(fslnvols "$FUNC")
 fslroi "$FUNC" $Tmp-FUNC0 0 $((nVol-1))
-fslroi "$FUNC" $Tmp-FUNC1 1 $nVol
+fslroi "$FUNC" $Tmp-FUNC1 1 $((nVol-1))
 echo -n "."
 # Compute DVARS, no standization
 fslmaths $Tmp-FUNC0 -sub $Tmp-FUNC1                $Tmp-Diff -odt float
