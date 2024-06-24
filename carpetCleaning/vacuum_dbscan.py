@@ -46,7 +46,7 @@ import csv
 from itertools import izip
 import numpy as np
 
-with open(folder+dbscan_regressors, 'rb') as csvfile:
+with open(folder+dbscan_regressors, 'r') as csvfile:
 	spamreader = csv.reader(csvfile, delimiter=',')
 	# row_count = sum(1 for row_dummy in spamreader)	
 	total = []
